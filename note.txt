@@ -1,0 +1,36 @@
+1. Pendaftaran Online Peserta
+Formulir dinamis sesuai jenis lomba (lari, sepeda, triathlon, dsb)
+
+Pembayaran terintegrasi (Midtrans, Xendit, dsb)
+
+Upload dokumen (foto peserta, KTP, dll)
+
+2. Penomoran BIB Otomatis
+Penomoran berdasarkan kategori, gelombang, usia, atau klub
+
+Cetak desain BIB dengan QR Code (untuk identifikasi digital)
+
+3. Manajemen Event
+Dashboard untuk panitia melihat jumlah peserta, kategori, statistik
+
+Export Excel & PDF peserta dengan BIB
+
+Fitur cetak BIB massal
+
+4. Scan & Validasi QR BIB
+Panitia bisa scan QR pada BIB untuk validasi kehadiran/check-in
+
+Bisa juga dipakai di pos checkpoint untuk pelacakan waktu/tempat
+
+5. Live Tracking (Opsional)
+Integrasi dengan GPS/LoRa untuk tracking peserta
+
+Khusus event skala besar seperti marathon atau sepeda
+
+6. Notifikasi & Pengumuman
+Email blast atau WhatsApp API untuk pemberitahuan jadwal, hasil, dll
+
+7. Multi Event Organizer
+SaaS artinya banyak EO bisa mendaftar dan bikin event sendiri
+
+Setiap EO punya dashboard dan branding sendiri
