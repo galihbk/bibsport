@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\CustomVerifyEmail;
+use App\Models\DetailUser;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -49,5 +50,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendEmailVerificationNotification()
     {
         $this->notify(new CustomVerifyEmail);
+    }
+    public function detailUser()
+    {
+        return $this->hasOne(DetailUser::class, 'user_email', 'email');
     }
 }

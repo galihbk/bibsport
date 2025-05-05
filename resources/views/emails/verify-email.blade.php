@@ -41,6 +41,8 @@
         <p style="text-align: center;">
             <a href="{{ $url }}" class="btn">Verifikasi Email</a>
         </p>
+        <p>Setelah verifikasi email, lengkapi data pribadi dan data pendukung, tunggu verifikasi kevalidan data anda</p>
+        <br>
         <p>Jika kamu tidak membuat akun, abaikan saja email ini.</p><br>
         <p>Salam hangat,<br><strong>Tim Bibsport.id</strong></p>
     </div>
