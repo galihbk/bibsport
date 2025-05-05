@@ -23,9 +23,6 @@ return new class extends Migration
             $table->string('poster_url')->nullable();
             $table->date('registration_start');
             $table->date('registration_end');
-            $table->enum('status', ['draft', 'published', 'closed'])->default('draft');
-
-            // Relasi ke users.email (bukan user_id)
             $table->string('admin_email');
             $table->timestamps();
         });

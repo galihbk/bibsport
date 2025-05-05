@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('event_id')->constrained()->onDelete('cascade');
+            $table->string('code')->unique();
+            $table->enum('discount_type', ['percent', 'fixed']);
+            $table->decimal('discount_value', 10, 2);
+            $table->integer('max_usage')->default(1);
+            $table->timestamp('expires_at')->nullable();
             $table->timestamps();
         });
     }

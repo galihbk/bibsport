@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('quota')->nullable();
             $table->string('bib_prefix')->nullable(); // contoh: 5K-
             $table->decimal('price', 10, 2)->default(0);
+            $table->string('poster_category')->nullable();
             $table->timestamps();
         });
     }

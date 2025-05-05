@@ -109,6 +109,7 @@
                                         <input type="file" name="phoneNumber" class="form-control" required>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                         <div id="wizard_Details" class="tab-pane" role="tabpanel">
@@ -121,8 +122,8 @@
                                             <div class="mb-3">
                                                 <label class="text-label form-label">Kategori Event<span
                                                         class="required">*</span></label>
-                                                <input type="text" name="kategori[0][kategoriName]" class="form-control"
-                                                    placeholder="Masukan nama event" required>
+                                                <input type="text" name="kategori[0][kategoriName]"
+                                                    class="form-control" placeholder="Masukan nama event" required>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 mb-2">
@@ -145,14 +146,20 @@
                                             <div class="mb-3">
                                                 <label class="text-label form-label">Format BIB<span
                                                         class="required">*</span></label>
-                                                <input type="text" name="kategori[0][formatBib]" class="form-control"
-                                                    placeholder="Masukan nama event" required>
+                                                <input type="text" name="kategori[0][formatBib]"
+                                                    class="form-control" placeholder="Masukan nama event" required>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-primary my-3" id="addCategory">+ Tambah Kategori</button>
+                            <div class="d-flex justify-content-between">
+
+                                <button type="button" class="btn btn-sm btn-primary my-1" id="addCategory"><i
+                                        class="fa-solid fa-minus"></i></button>
+                                <button type="button" class="btn btn-sm btn-primary my-1" id="addCategory"><i
+                                        class="fa-solid fa-plus"></i></button>
+                            </div>
 
                         </div>
                         <div id="wizard_Payment" class="tab-pane" role="tabpanel">
@@ -164,17 +171,17 @@
         </div>
     </div>
     @section('script')
-    <script>
-        $(document).ready(function() {
-            // SmartWizard initialize
-            $('#smartwizard').smartWizard();
-            let categoryIndex = 1;
+        <script>
+            $(document).ready(function() {
+                // SmartWizard initialize
+                $('#smartwizard').smartWizard();
+                let categoryIndex = 1;
 
-            document.getElementById('addCategory').addEventListener('click', function() {
-                const container = document.getElementById('category-container');
-                const newCategory = document.createElement('div');
-                newCategory.classList.add('category-block');
-                newCategory.innerHTML = `
+                document.getElementById('addCategory').addEventListener('click', function() {
+                    const container = document.getElementById('category-container');
+                    const newCategory = document.createElement('div');
+                    newCategory.classList.add('category-block');
+                    newCategory.innerHTML = `
         <h3 class="text-center">Kategori ${categoryIndex + 1}</h3>
         <hr>
         <div class="row">
@@ -204,10 +211,10 @@
             </div>
         </div>
     `;
-                container.appendChild(newCategory);
-                categoryIndex++;
+                    container.appendChild(newCategory);
+                    categoryIndex++;
+                });
             });
-        });
-    </script>
+        </script>
     @endsection
 </x-app-layout>

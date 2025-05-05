@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>BIBSport</title>
+    <title>BibSport</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
 
@@ -47,11 +47,11 @@
 
         <div class="nav-header">
             <a href="{{ url('dashboard') }}" class="brand-logo">
-                <div class="logo-abbr" width="53" height="33">
-                    <img src="{{ url('assets') }}/img/logo-tanpa-text.png" alt="logo image" width="100%">
+                <div class="logo-abbr d-flex align-items-center mt-3">
+                    <img src="{{ url('assets') }}/img/logo-only-bibsport.png" alt="Logo Only BIBSPORT" width="100%">
                 </div>
-                <div class="brand-title" width="53px" height="33px">
-                    <img width="100%" src="{{ url('assets') }}/img/logo-text-only.png" alt="">
+                <div class="brand-title" width="10px">
+                    <img width="100%" src="{{ url('assets') }}/img/text-only-bibsport.png" alt="">
                 </div>
             </a>
             <div class="nav-control">
@@ -98,8 +98,7 @@
                 <ul class="metismenu" id="menu">
                     <li class="dropdown header-profile">
                         <a class="nav-link" href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
-                            <img src="{{ url('assets-admin') }}/images/profile/pic1.jpg" width="20"
-                                alt="">
+                            <img src="{{ url('assets-admin') }}/images/profile/pic1.jpg" width="20" alt="">
                             <div class="header-info ms-3">
                                 <span class="font-w600 ">Hi, <b>{{ explode(' ', $data->name)[0] }}</b></span>
                                 <small class="text-end font-w400">{{ $data->email }}</small>
