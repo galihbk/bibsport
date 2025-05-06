@@ -78,7 +78,7 @@
     <div class="col-xl-6 col-lg-6">
         <div class="pages-left h-100">
             <div class="login-content">
-                <a href="index.html"><img src="{{ url('assets') }}/img/logo-text-right.png" width="30%"
+                <a href="index.html"><img src="{{ url('assets') }}/img/logo-bibsport-text-right.png" width="30%"
                         class="mb-3" alt=""></a>
 
                 <p>Your true value is determined by how much more you give in value than you take in payment. ...</p>
