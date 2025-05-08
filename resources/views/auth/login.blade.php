@@ -34,15 +34,15 @@
                 <div class="form-row d-flex justify-content-between mt-4 mb-2">
                     <div class="mb-4">
                         <div class="form-check custom-checkbox mb-3">
-                            <input type="checkbox" class="form-check-input" id="customCheckBox1">
+                            <input type="checkbox" class="form-check-input" id="customCheckBox1" name="remember">
                             <label class="form-check-label mt-1" for="customCheckBox1">Ingat saya</label>
                         </div>
                     </div>
                     <div class="mb-4">
                         @if (Route::has('password.request'))
-                            <a class="btn-link text-primary0" href="{{ route('password.request') }}">
-                                {{ __('Lupa kata sandi?') }}
-                            </a>
+                        <a class="btn-link text-primary0" href="{{ route('password.request') }}">
+                            {{ __('Lupa kata sandi?') }}
+                        </a>
                         @endif
                     </div>
                 </div>
@@ -55,13 +55,8 @@
 
                 <div class="mb-3">
                     <ul class="d-flex align-self-center justify-content-center">
-                        <li><a target="_blank" href="https://www.facebook.com/"
-                                class="fab fa-facebook-f btn-facebook"></a></li>
                         <li><a target="_blank" href="https://www.google.com/"
-                                class="fab fa-google-plus-g btn-google-plus mx-2"></a></li>
-                        <li><a target="_blank" href="https://www.linkedin.com/"
-                                class="fab fa-linkedin-in btn-linkedin me-2"></a></li>
-                        <li><a target="_blank" href="https://twitter.com/" class="fab fa-twitter btn-twitter"></a></li>
+                                class="btn-google-plus mx-2"><i class="fa-brands fa-google-plus-g"></i></a></li>
                     </ul>
                 </div>
                 <p class="text-center">Belum punya akun?

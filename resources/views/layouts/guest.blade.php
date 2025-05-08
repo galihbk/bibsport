@@ -15,6 +15,7 @@
 
     <!-- Fonts -->
     <link href="{{ url('assets-admin') }}/css/style.css" rel="stylesheet">
+    <link href="{{ url('assets-admin') }}/vendor/fontawesome/css/all.min.css" rel="stylesheet" />
 </head>
 
 <body class="vh-100">
