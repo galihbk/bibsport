@@ -17,7 +17,7 @@ class CheckVerified
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::check() && !Auth::user()->is_verified) {
-            return redirect()->route('account.complete')->with('error', 'Silakan lengkapi data akun terlebih dahulu.');
+            return redirect()->route('profile.detail')->with('error', 'Silakan lengkapi data akun terlebih dahulu.');
         }
         return $next($request);
     }

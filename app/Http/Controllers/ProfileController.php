@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -24,22 +25,55 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request)
     {
-        $request->user()->fill($request->validated());
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'identity_id' => 'required|string|max:50',
+            'file_doc' => 'nullable|file|mimes:pdf|max:2048',
+            'address' => 'required|string|max:500',
+        ]);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $user = Auth::user();
+
+        if ($request->hasFile('file_doc')) {
+            if ($user->file_doc && \Storage::exists('uploads/docs/' . $user->file_doc)) {
+                \Storage::delete('uploads/docs/' . $user->file_doc);
+            }
+
+            $filename = time() . '_' . $request->file('file_doc')->getClientOriginalName();
+            $request->file('file_doc')->storeAs('uploads/docs', $filename);
+
+            $user->file_doc = $filename;
         }
 
-        $request->user()->save();
+        $user->name = $request->name;
+        $user->phone = $request->phone;
+        $user->identity_id = $request->identity_id;
+        $user->address = $request->address;
+        $user->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return redirect()->back()->with('success', 'Profil berhasil diperbarui.');
     }
 
-    /**
-     * Delete the user's account.
-     */
+    public function downloadDokumen($filename)
+    {
+        $user = Auth::user();
+        $path = 'uploads/docs/' . $filename;
+        // dd(Storage::disk('local')->exists($path));
+        if (!Storage::disk('local')->exists($path)) {
+            abort(404, 'File tidak ditemukan.');
+        }
+
+        $owner = \App\Models\User::where('file_doc', $filename)->first();
+        if (!$owner || $owner->id !== $user->id) {
+            abort(403, 'Anda tidak memiliki akses ke dokumen ini.');
+        }
+
+        return Storage::disk('local')->download($path);
+    }
+
     public function destroy(Request $request): RedirectResponse
     {
         $request->validateWithBag('userDeletion', [
