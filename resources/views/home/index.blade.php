@@ -1,176 +1,210 @@
-<!DOCTYPE html>
-<!--
-	Intensify by TEMPLATED
-	templated.co @templatedco
-	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
--->
-<html>
+@extends('layouts.home')
 
-<head>
-    <title>BIBSPORT</title>
-    <meta charset="utf-8" />
-    <meta
-        name="robots"
-        content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="{{ url('assets') }}/img/favicon.png" rel="icon">
-    <link href="{{ url('assets') }}/img/apple-touch-icon.png" rel="apple-touch-icon">
-    <link rel="stylesheet" href="{{ url('assets') }}/css/main.css" />
-</head>
+@section('title', 'Beranda')
 
-<body>
-    <!-- Header -->
-    <header id="header">
-        <nav class="left">
-            <a href="#menu"><span>Menu</span></a>
-        </nav>
-        <a href="{{route('home')}}" class="logo" style="height: 100%; display:flex; justify-content:center; align-items: center;"><img width="15%" src="{{ url('assets') }}/img/logo-bibsport-text-right.png" alt="Logo BIBSPORT"></a>
-        <nav class="right"><a href="{{route('login')}}" class="button alt">masuk</a></nav>
-    </header>
-    <!-- Menu -->
-    <nav id="menu">
-        <ul class="links">
-            <li><a href="{{route('home')}}">Beranda</a></li>
-            <li><a href="{{route('home.event-list')}}">Event</a></li>
-            <li><a href="{{route('home.contact')}}">Kontak</a></li>
-        </ul>
-        <ul class="actions vertical">
-            <li><a href="#" class="button fit">Masuk</a></li>
-        </ul>
-    </nav>
-    <!-- Banner -->
-    <section id="banner">
-        <div class="content">
-            <h1>BIBSPORT</h1>
-            <p>
-                Mudah Atur Event, Fokus pada Lomba
-            </p>
-            <ul class="actions">
-                <li><a href="{{route('login')}}" class="button scrolly">Buat Event</a></li>
-            </ul>
-        </div>
-    </section>
-    <section id="one" class="wrapper">
-        <div class="inner flex flex-3">
-            <div class="flex-item left">
-                <div>
-                    <h3>Manajemen Event Mudah</h3>
-                    <p>
-                        Buat dan atur event olahraga hanya dalam hitungan menit. Kelola informasi dasar seperti nama event, tanggal, lokasi, dan deskripsi secara fleksibel.
-                    </p>
-                </div>
-                <div>
-                    <h3>Kategori Peserta Fleksibel</h3>
-                    <p>
-                        Tambahkan kategori peserta seperti Umum, Pelajar, atau Profesional dengan mudah. Dukung berbagai jenis lomba dalam satu event.
-                    </p>
-                </div>
-            </div>
-            <div class="flex-item image fit round">
-                <img src="{{url('assets')}}/img/undraw_timeline_2gfy.png" alt="" width="330" />
-            </div>
-            <div class="flex-item right">
-                <div>
-                    <h3>Pembayaran Otomatis & Instan</h3>
-                    <p>
-                        Bibsport mendukung integrasi dengan payment gateway untuk transaksi cepat dan aman.
-                    </p>
-                </div>
-                <div>
-                    <h3>Manajemen Peserta</h3>
-                    <p>
-                        Kelola data peserta dengan mudah. Tandai kehadiran, lakukan verifikasi, cetak nomor dada, dan kelola pengelompokan peserta.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Two -->
-    <section id="two" class="wrapper style1 special">
-        <div class="inner">
-            <h2>Feugiat lorem</h2>
-            <figure>
-                <blockquote>
-                    "Morbi in sem quis dui placerat ornare. Pellentesque odio nisi,
-                    euismod in, pharetra<br />
-                    magna etiam lorem ultricies in diam. Sed arcu cras consequat."
-                </blockquote>
-                <footer>
-                    <cite class="author">Jane Anderson</cite>
-                    <cite class="company">CEO, Untitled</cite>
-                </footer>
-            </figure>
-        </div>
-    </section>
-    <!-- Three -->
-    <section id="three" class="wrapper">
-        <div class="inner flex flex-3">
-            <div class="flex-item box">
-                <div class="image fit">
-                    <img src="images/pic02.jpg" alt="" width="418" height="200" />
-                </div>
-                <div class="content">
-                    <h3>Consequat</h3>
-                    <p>
-                        Placerat ornare. Pellentesque od sed euismod in, pharetra ltricies
-                        edarcu cas consequat.
-                    </p>
-                </div>
-            </div>
-            <div class="flex-item box">
-                <div class="image fit">
-                    <img src="images/pic03.jpg" alt="" width="418" height="200" />
-                </div>
-                <div class="content">
-                    <h3>Adipiscing</h3>
-                    <p>
-                        Morbi in sem quis dui placerat Pellentesque odio nisi, euismod
-                        pharetra lorem ipsum.
-                    </p>
-                </div>
-            </div>
-            <div class="flex-item box">
-                <div class="image fit">
-                    <img src="images/pic04.jpg" alt="" width="418" height="200" />
-                </div>
-                <div class="content">
-                    <h3>Malesuada</h3>
-                    <p>
-                        Nam dui mi, tincidunt quis, accu an porttitor, facilisis luctus
-                        que metus vulputate sem magna.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Footer -->
-    <footer id="footer">
-        <div class="inner">
-            <h2>Get In Touch</h2>
-            <ul class="actions">
-                <li>
-                    <span class="icon fa-phone"></span> <a href="#">(000) 000-0000</a>
-                </li>
-                <li>
-                    <span class="icon fa-envelope"></span>
-                    <a href="#">admin@bibsport.id</a>
-                </li>
-                <li>
-                    <span class="icon fa-map-marker"></span> <a href="https://maps.app.goo.gl/7WNx3aWHQUXTXp71A">RT.4/RW.5, Karangsalam, Penyarang, Kec. Sidareja, Kabupaten Cilacap, Jawa Tengah 53261</a>
-                </li>
-            </ul>
-        </div>
-    </footer>
-    <div class="copyright">
-        Copyright 2023. All rights reserved.
-    </div>
+@section('content')
+    <main class="main">
+        <section id="hero" class="hero section">
 
-    <!-- Scripts -->
-    <script src="{{ url('assets') }}/js/jquery.min.js"></script>
-    <script src="{{ url('assets') }}/js/jquery.scrolly.min.js"></script>
-    <script src="{{ url('assets') }}/js/skel.min.js"></script>
-    <script src="{{ url('assets') }}/js/util.js"></script>
-    <script src="{{ url('assets') }}/js/main.js"></script>
-</body>
+            <img src="assets/img/hero-bg-abstract.jpg" alt="" data-aos="fade-in" class="">
 
-</html>
+            <div class="container">
+                <div class="row justify-content-center" data-aos="zoom-out">
+                    <div class="col-xl-7 col-lg-9 text-center">
+                        <h1>BIBSPORT</h1>
+                        <p>Mudah Atur Event, Fokus pada Lomba</p>
+                    </div>
+                </div>
+                <div class="text-center" data-aos="zoom-out" data-aos-delay="100">
+                    <a href="{{ route('login') }}" class="btn-get-started">Buat Event Sekarang</a>
+                </div>
+
+                <div class="row gy-4 mt-5">
+                    <div class="col-md-6 col-lg-3" data-aos="zoom-out" data-aos-delay="100">
+                        <div class="icon-box">
+                            <div class="icon"><i class="bi bi-easel"></i></div>
+                            <h4 class="title"><a href="">Manajemen Event Mudah</a></h4>
+                            <p class="description">Buat dan atur event olahraga hanya dalam hitungan menit. Kelola informasi
+                                dasar seperti nama event, tanggal, lokasi, dan deskripsi secara fleksibel.i</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3" data-aos="zoom-out" data-aos-delay="200">
+                        <div class="icon-box">
+                            <div class="icon"><i class="bi bi-gem"></i></div>
+                            <h4 class="title"><a href="">Kategori Tiket Fleksibel</a></h4>
+                            <p class="description">Tambahkan kategori tiket dengan
+                                mudah. Dukung berbagai jenis lomba dalam satu event.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3" data-aos="zoom-out" data-aos-delay="300">
+                        <div class="icon-box">
+                            <div class="icon"><i class="bi bi-geo-alt"></i></div>
+                            <h4 class="title"><a href="">Pantau Pendaftar Secara Real-time</a></h4>
+                            <p class="description">Lihat data peserta yang mendaftar secara langsung. Sistem kami mendukung
+                                ekspor data dan verifikasi dengan QR Code.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3" data-aos="zoom-out" data-aos-delay="400">
+                        <div class="icon-box">
+                            <div class="icon"><i class="bi bi-command"></i></div>
+                            <h4 class="title"><a href="">Manajemen Peserta</a></h4>
+                            <p class="description">Kelola data peserta dengan mudah. Tandai kehadiran, lakukan verifikasi,
+                                cetak nomor dada.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+        <section id="stats" class="stats section light-background">
+            <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+                <div class="row gy-4">
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stats-item text-center w-100 h-100">
+                            <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1"
+                                class="purecounter"></span>
+                            <p>Clients</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stats-item text-center w-100 h-100">
+                            <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1"
+                                class="purecounter"></span>
+                            <p>Projects</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stats-item text-center w-100 h-100">
+                            <span data-purecounter-start="0" data-purecounter-end="1453" data-purecounter-duration="1"
+                                class="purecounter"></span>
+                            <p>Hours Of Support</p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="stats-item text-center w-100 h-100">
+                            <span data-purecounter-start="0" data-purecounter-end="32" data-purecounter-duration="1"
+                                class="purecounter"></span>
+                            <p>Workers</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="call-to-action" class="call-to-action section accent-background">
+            <div class="container">
+                <div class="row justify-content-center" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="col-xl-10">
+                        <div class="text-center">
+                            <h3>Gabung dan Kelola Event Olahragamu Sekarang!</h3>
+                            <p>
+                                Bibsport memudahkan penyelenggaraan event olahraga — dari pendaftaran peserta, manajemen
+                                kategori. Tingkatkan efisiensi dan pengalaman
+                                peserta dalam satu platform terpadu.
+                            </p>
+                            <a class="cta-btn" href="{{ route('login') }}">Gabung</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="faq section light-background">
+            <div class="container section-title" data-aos="fade-up">
+                <h2>Frequently Asked Questions</h2>
+                <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+            </div>
+
+            <div class="container">
+
+                <div class="row justify-content-center">
+
+                    <div class="col-lg-10" data-aos="fade-up" data-aos-delay="100">
+
+                        <div class="faq-container">
+
+                            <div class="faq-item faq-active">
+                                <h3>Non consectetur a erat nam at lectus urna duis?</h3>
+                                <div class="faq-content">
+                                    <p>Feugiat pretium nibh ipsum consequat. Tempus iaculis urna id volutpat lacus
+                                        laoreet non curabitur gravida. Venenatis lectus magna fringilla urna porttitor
+                                        rhoncus dolor purus non.</p>
+                                </div>
+                                <i class="faq-toggle bi bi-chevron-right"></i>
+                            </div>
+
+                            <div class="faq-item">
+                                <h3>Feugiat scelerisque varius morbi enim nunc faucibus?</h3>
+                                <div class="faq-content">
+                                    <p>Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id
+                                        interdum velit laoreet id donec ultrices. Fringilla phasellus faucibus
+                                        scelerisque eleifend donec pretium. Est pellentesque elit ullamcorper dignissim.
+                                        Mauris ultrices eros in cursus turpis massa tincidunt dui.</p>
+                                </div>
+                                <i class="faq-toggle bi bi-chevron-right"></i>
+                            </div>
+
+                            <div class="faq-item">
+                                <h3>Dolor sit amet consectetur adipiscing elit pellentesque?</h3>
+                                <div class="faq-content">
+                                    <p>Eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis orci.
+                                        Faucibus pulvinar elementum integer enim. Sem nulla pharetra diam sit amet nisl
+                                        suscipit. Rutrum tellus pellentesque eu tincidunt. Lectus urna duis convallis
+                                        convallis tellus. Urna molestie at elementum eu facilisis sed odio morbi quis
+                                    </p>
+                                </div>
+                                <i class="faq-toggle bi bi-chevron-right"></i>
+                            </div>
+
+                            <div class="faq-item">
+                                <h3>Ac odio tempor orci dapibus. Aliquam eleifend mi in nulla?</h3>
+                                <div class="faq-content">
+                                    <p>Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi. Id
+                                        interdum velit laoreet id donec ultrices. Fringilla phasellus faucibus
+                                        scelerisque eleifend donec pretium. Est pellentesque elit ullamcorper dignissim.
+                                        Mauris ultrices eros in cursus turpis massa tincidunt dui.</p>
+                                </div>
+                                <i class="faq-toggle bi bi-chevron-right"></i>
+                            </div>
+
+                            <div class="faq-item">
+                                <h3>Tempus quam pellentesque nec nam aliquam sem et tortor?</h3>
+                                <div class="faq-content">
+                                    <p>Molestie a iaculis at erat pellentesque adipiscing commodo. Dignissim suspendisse
+                                        in est ante in. Nunc vel risus commodo viverra maecenas accumsan. Sit amet nisl
+                                        suscipit adipiscing bibendum est. Purus gravida quis blandit turpis cursus in
+                                    </p>
+                                </div>
+                                <i class="faq-toggle bi bi-chevron-right"></i>
+                            </div>
+
+                            <div class="faq-item">
+                                <h3>Perspiciatis quod quo quos nulla quo illum ullam?</h3>
+                                <div class="faq-content">
+                                    <p>Enim ea facilis quaerat voluptas quidem et dolorem. Quis et consequatur non sed
+                                        in suscipit sequi. Distinctio ipsam dolore et.</p>
+                                </div>
+                                <i class="faq-toggle bi bi-chevron-right"></i>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+@endsection

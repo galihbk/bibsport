@@ -10,30 +10,31 @@ class Event extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'event_name',
         'slug',
         'description',
-        'location',
-        'start_date',
-        'end_date',
+        'skb',
+        'location_event',
+        'location_rpc',
+        'maps_event',
+        'maps_rpc',
+        'start_date_event',
+        'end_date_event',
+        'start_date_rpc',
+        'end_date_rpc',
         'event_type',
+        'instagram',
         'poster_url',
-        'bib_format',
-        'max_participants',
-        'registration_fee',
-        'registration_start',
-        'registration_end',
-        'status',
-        'admin_email'
+        'user_id'
     ];
 
     public function categories()
     {
-        return $this->hasMany(EventCategory::class);
+        return $this->hasMany(TicketCatgeori::class);
     }
 
     public function admin()
     {
-        return $this->belongsTo(User::class, 'admin_email', 'email');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

@@ -20,6 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var list<string>
      */
     protected $fillable = [
+        'id',
         'name',
         'email',
         'password',
@@ -56,6 +57,6 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function detailUser()
     {
-        return $this->hasOne(DetailUser::class, 'user_email', 'email');
+        return $this->hasOne(DetailUser::class, 'user_id', 'id');
     }
 }

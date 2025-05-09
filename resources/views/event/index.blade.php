@@ -20,8 +20,11 @@
             </div>
         </div>
         <div class="col-12">
-            <div class="alert alert-warning">Anda tidak bisa menambahkan event karena data pada akun anda belum di
-                perbarui</div>
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
             <div class="row">
                 <div class="col-lg-12 col-xxl-4 col-xl-6">
                     <div class="card">
@@ -108,6 +111,15 @@
         </div>
     </div>
     @section('script')
-        <script></script>
+        <script>
+            setTimeout(function() {
+                const alertBox = document.getElementById('success-alert');
+                if (alertBox) {
+                    alertBox.style.transition = 'opacity 0.5s ease';
+                    alertBox.style.opacity = '0';
+                    setTimeout(() => alertBox.remove(), 500);
+                }
+            }, 5000);
+        </script>
     @endsection
 </x-app-layout>
