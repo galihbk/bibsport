@@ -102,71 +102,91 @@
     </form>
 
     @section('script')
-        <script>
-            $(document).ready(function() {
-                CKEDITOR.replace('editor1');
-                $('#smartwizard').smartWizard({
-                    selected: 0,
-                    toolbarSettings: {
-                        toolbarPosition: 'none'
+    <script>
+        $(document).ready(function() {
+            CKEDITOR.replace('editor1', {
+                toolbar: [{
+                        name: 'basicstyles',
+                        items: ['Bold', 'Italic']
                     },
-                });
-
-                let currentStep = 0;
-                const totalSteps = 2;
-                let categoryIndex = 0;
-
-                const wizard = $('#smartwizard');
-                const nextBtn = $('#nextBtn');
-                const prevBtn = $('#prevBtn');
-                const submitBtn = $('#submitBtn');
-
-                nextBtn.on('click', function() {
-                    if (currentStep === 0) {
-                        if (formInputs.filter(function() {
-                                return !this.value;
-                            }).length) {
-                            alert('Semua field pada step 1 harus diisi.');
-                            return;
-                        }
+                    {
+                        name: 'paragraph',
+                        items: ['NumberedList', 'BulletedList']
+                    },
+                    {
+                        name: 'links',
+                        items: ['Link', 'Unlink']
+                    },
+                    {
+                        name: 'undo',
+                        items: ['Undo', 'Redo']
                     }
+                ],
+                removePlugins: 'elementspath',
+                resize_enabled: false
+            });
+            $('#smartwizard').smartWizard({
+                selected: 0,
+                toolbarSettings: {
+                    toolbarPosition: 'none'
+                },
+            });
 
-                    if (currentStep === 1) {
-                        const categoryInputs = $('input[name^="kategori"]');
-                        if (categoryInputs.filter(function() {
-                                return !this.value;
-                            }).length) {
-                            alert('Semua field pada kategori event harus diisi.');
-                            return;
-                        }
+            let currentStep = 0;
+            const totalSteps = 2;
+            let categoryIndex = 0;
+
+            const wizard = $('#smartwizard');
+            const nextBtn = $('#nextBtn');
+            const prevBtn = $('#prevBtn');
+            const submitBtn = $('#submitBtn');
+
+            nextBtn.on('click', function() {
+                if (currentStep === 0) {
+                    if (formInputs.filter(function() {
+                            return !this.value;
+                        }).length) {
+                        alert('Semua field pada step 1 harus diisi.');
+                        return;
                     }
-
-                    if (currentStep < totalSteps - 1) {
-                        wizard.smartWizard("next");
-                        currentStep++;
-                        updateButtons();
-                    }
-                });
-
-                prevBtn.on('click', function() {
-                    if (currentStep > 0) {
-                        wizard.smartWizard("prev");
-                        currentStep--;
-                        updateButtons();
-                    }
-                });
-
-                function updateButtons() {
-                    nextBtn.toggleClass('d-none', currentStep === totalSteps - 1);
-                    submitBtn.toggleClass('d-none', currentStep !== totalSteps - 1);
                 }
 
-                // Menambah kategori
-                $('#addCategory').on('click', function() {
-                    const container = $('#category-container');
-                    categoryIndex++;
+                if (currentStep === 1) {
+                    const categoryInputs = $('input[name^="kategori"]');
+                    if (categoryInputs.filter(function() {
+                            return !this.value;
+                        }).length) {
+                        alert('Semua field pada kategori event harus diisi.');
+                        return;
+                    }
+                }
 
-                    const html = `
+                if (currentStep < totalSteps - 1) {
+                    wizard.smartWizard("next");
+                    currentStep++;
+                    updateButtons();
+                }
+            });
+
+            prevBtn.on('click', function() {
+                if (currentStep > 0) {
+                    wizard.smartWizard("prev");
+                    currentStep--;
+                    updateButtons();
+                }
+            });
+
+            function updateButtons() {
+                nextBtn.toggleClass('d-none', currentStep === totalSteps - 1);
+                submitBtn.toggleClass('d-none', currentStep !== totalSteps - 1);
+            }
+
+            // Menambah kategori
+            $('#addCategory').on('click', function() {
+                const container = $('#category-container');
+                categoryIndex++;
+
+                const html = `
                         <div class="category-block" id="category-block-${categoryIndex}">
                             <h4 class="text-center">Kategori ${categoryIndex}</h4>
                             <hr>
@@ -193,23 +213,23 @@
                             </div>
                         </div>
                     `;
-                    container.append(html);
-                });
+                container.append(html);
+            });
 
-                // Menghapus kategori
-                $(document).on('click', '.removeCategory', function() {
-                    const index = $(this).data('index');
-                    $(`#category-block-${index}`).remove();
+            // Menghapus kategori
+            $(document).on('click', '.removeCategory', function() {
+                const index = $(this).data('index');
+                $(`#category-block-${index}`).remove();
 
-                    // Mengatur ulang nomor kategori setelah penghapusan
-                    categoryIndex--;
-                    $('#category-container').children('.category-block').each(function(i) {
-                        $(this).find('h4').text(`Kategori ${i + 1}`);
-                        $(this).attr('id', `category-block-${i + 1}`);
-                        $(this).find('.removeCategory').data('index', i + 1);
-                    });
+                // Mengatur ulang nomor kategori setelah penghapusan
+                categoryIndex--;
+                $('#category-container').children('.category-block').each(function(i) {
+                    $(this).find('h4').text(`Kategori ${i + 1}`);
+                    $(this).attr('id', `category-block-${i + 1}`);
+                    $(this).find('.removeCategory').data('index', i + 1);
                 });
             });
-        </script>
+        });
+    </script>
     @endsection
 </x-app-layout>

@@ -3,11 +3,12 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\HomeController;
 use App\Http\Middleware\CheckVerified;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/event-list', [HomeController::class, 'eventList'])->name('home.event-list');
+Route::get('/contact', [HomeController::class, 'contact'])->name('home.contact');
 
 Route::middleware('auth')->group(function () {
     // Rute untuk profil
