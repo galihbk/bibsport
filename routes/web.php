@@ -23,6 +23,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/event', [EventController::class, 'index'])->name('event');
         Route::get('/add-event', [EventController::class, 'addEvent'])->name('event.add-event');
         Route::post('/event/store', [EventController::class, 'store'])->name('event.store');
+        Route::get('/events/search', [EventController::class, 'search'])->name('events.search');
         Route::post('/event', [EventController::class, 'index'])->name('event');
         Route::get('/dashboard', function () {
             return view('dashboard');

@@ -13,7 +13,8 @@ class EventController extends Controller
 {
     public function index()
     {
-        return view('event.index');
+        $events = Event::latest()->paginate(6);
+        return view('event.index', compact('events'));
     }
     public function addEvent()
     {
@@ -96,5 +97,15 @@ class EventController extends Controller
                 ->withInput()
                 ->with('error', 'Gagal menambahkan event. Silakan coba lagi.');
         }
+    }
+    public function search(Request $request)
+    {
+        $query = $request->get('query');
+
+        $events = Event::where('event_name', 'like', '%' . $query . '%')
+            ->latest()
+            ->paginate(6);
+
+        return view('partials.card-event-admin', compact('events'))->render(); // partial view
     }
 }
