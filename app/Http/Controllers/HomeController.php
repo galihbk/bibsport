@@ -155,7 +155,7 @@ class HomeController extends Controller
         $snapToken = Snap::getSnapToken($params);
 
         // Tampilkan halaman pembayaran
-        return view('registrasi.bayar', compact('pendaftar', 'snapToken', 'ticket'));
+        return view('registrasi.pay', compact('pendaftar', 'snapToken', 'ticket'));
     }
 
     public function cekVoucher(Request $request)
