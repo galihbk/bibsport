@@ -15,6 +15,8 @@ Route::post('/events/register/store', [HomeController::class, 'registerStore'])-
 Route::post('/cek-voucher', [HomeController::class, 'cekVoucher'])->name('home.cek-voucher');
 Route::get('/events/slug/{slug}', [HomeController::class, 'eventDetail'])->name('home.event-detail');
 Route::post('/contact/send', [HomeController::class, 'send'])->name('home.send');
+Route::get('/event-success-payment', [HomeController::class, 'successPage'])->name('event.success.payment');
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Rute untuk profil

@@ -14,13 +14,14 @@ class Ticket extends Model
         'ticket_start',
         'ticket_end',
     ];
+
     public function eventCategory()
     {
-        return $this->belongsTo(EventCategories::class, 'event_category_id');
+        return $this->belongsTo(EventCategories::class, 'event_categories_id'); // Relasi ke EventCategories
     }
 
     public function vouchers()
     {
-        return $this->hasMany(Voucher::class, 'ticket_id');
+        return $this->hasMany(Voucher::class); // Relasi ke Voucher
     }
 }

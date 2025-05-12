@@ -21,7 +21,8 @@ class MidtransServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Config::$serverKey = env('MIDTRANS_SERVER_KEY');
-        Config::$isProduction = false; // ubah ke true saat live
+        Config::$clientKey = env('MIDTRANS_CLIENT_KEY');
+        Config::$isProduction = env('MIDTRANS_IS_PRODUCTION', false); // Ambil dari .env jika ada
         Config::$isSanitized = true;
         Config::$is3ds = true;
     }

@@ -12,8 +12,14 @@ class EventCategories extends Model
         'distance',
         'poster_category',
     ];
+
+    public function event()
+    {
+        return $this->belongsTo(Event::class); // Relasi ke Event
+    }
+
     public function tickets()
     {
-        return $this->hasMany(Ticket::class, 'event_categories_id');
+        return $this->hasMany(Ticket::class); // Relasi ke Ticket
     }
 }

@@ -40,12 +40,12 @@ return new class extends Migration
             $table->string('voucher')->nullable();
 
             // Informasi pembayaran Midtrans
-            $table->string('order_id')->unique(); // kode unik ke Midtrans
+            $table->string('order_id')->unique()->nullable(); // kode unik ke Midtrans
             $table->string('snap_token')->nullable();
             $table->enum('status_pembayaran', ['pending', 'paid', 'failed', 'challenge'])->default('pending');
             $table->string('metode_pembayaran')->nullable();
             $table->dateTime('tanggal_pembayaran')->nullable();
-            $table->integer('jumlah_bayar');
+            $table->integer('jumlah_bayar')->nullable();
 
             $table->timestamps();
         });

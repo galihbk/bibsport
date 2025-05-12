@@ -6,7 +6,7 @@
 <main class="main">
     <div class="container py-3">
         <h5 class="text-center">Form Registrasi</h5>
-        <form method="POST" action="">
+        <form method="POST" action="{{route('home.event-register-store')}}">
             @csrf
             <div class="row">
                 <div class="col-lg-8">

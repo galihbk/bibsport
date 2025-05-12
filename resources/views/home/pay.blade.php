@@ -4,19 +4,36 @@
 
 @section('content')
 <div class="container py-5">
-    <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-            <h4>Konfirmasi Pembayaran</h4>
-        </div>
-        <div class="card-body">
-            <p><strong>Nama:</strong> {{ $pendaftar->nama_lengkap }}</p>
-            <p><strong>Email:</strong> {{ $pendaftar->email }}</p>
-            <p><strong>No. WA:</strong> {{ $pendaftar->no_wa }}</p>
-            <p><strong>Event:</strong> {{ $ticket->eventCategory->event->name }}</p>
-            <p><strong>Kategori Tiket:</strong> {{ $ticket->name }}</p>
-            <p><strong>Harga Bayar:</strong> Rp{{ number_format($params['transaction_details']['gross_amount'], 0, ',', '.') }}</p>
-
-            <button id="pay-button" class="btn btn-success">Bayar Sekarang</button>
+    <div class="d-flex justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow" style="border: none;">
+                <div class="card-header">
+                    <h4 class="text-center">Konfirmasi Pembayaran</h4>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <p><strong>Nama</strong> </p>
+                            <p><strong>Email</strong> </p>
+                            <p><strong>No. WA</strong> </p>
+                            <p><strong>Event</strong> </p>
+                            <p><strong>Kategori Tiket</strong> </p>
+                            <p><strong>Harga Tiket</strong> </p>
+                        </div>
+                        <div>
+                            <p>: {{ $pendaftar->nama_lengkap }}</p>
+                            <p>: {{ $pendaftar->email }}</p>
+                            <p>: {{ $pendaftar->no_wa }}</p>
+                            <p>: {{ $ticket->eventCategory->event->event_name }}</p>
+                            <p>: {{ $ticket->name_ticket }}</p>
+                            <p>: Rp. {{ number_format($params['transaction_details']['gross_amount'], 0, ',', '.') }}</p>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button id="pay-button" class="btn btn-primary">Bayar Sekarang</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -24,11 +41,12 @@
 
 @section('scripts')
 <!-- Midtrans Snap -->
-<script src="https://app.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
+
 
 <script>
     document.getElementById('pay-button').addEventListener('click', function() {
-        window.snap.pay('{{ $snapToken }}', {
+        window.snap.pay('{{$snapToken}}', {
             onSuccess: function(result) {
                 alert("Pembayaran berhasil!");
                 console.log(result);

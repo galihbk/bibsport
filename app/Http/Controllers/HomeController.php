@@ -23,6 +23,15 @@ class HomeController extends Controller
     {
         return view('home.contact');
     }
+    public function successPage(Request $request)
+    {
+        $order_id = $request->query('order_id');
+
+        $order = Order::where('order_id', $order_id)->firstOrFail();
+
+        return view('home.response-pay', compact('order'));
+    }
+
     public function send(Request $request)
     {
         $request->validate([
@@ -100,6 +109,7 @@ class HomeController extends Controller
 
         // Ambil data tiket
         $ticket = Ticket::with('eventCategory.event')->findOrFail($validated['ticket_id']);
+
         $eventType = strtolower($ticket->eventCategory->event->event_type);
 
         // Tentukan prefix order_id berdasarkan jenis event
@@ -142,7 +152,7 @@ class HomeController extends Controller
         $params = [
             'transaction_details' => [
                 'order_id' => $order_id,
-                'gross_amount' => $hargaAkhir, // Harga setelah diskon
+                'gross_amount' => $hargaAkhir,
             ],
             'customer_details' => [
                 'first_name' => $pendaftar->nama_lengkap,
@@ -153,9 +163,8 @@ class HomeController extends Controller
 
         // Dapatkan SnapToken dari Midtrans
         $snapToken = Snap::getSnapToken($params);
-
-        // Tampilkan halaman pembayaran
-        return view('registrasi.pay', compact('pendaftar', 'snapToken', 'ticket'));
+        // Tampilkan halaman pemba  yaran
+        return view('home.pay', compact('pendaftar', 'snapToken', 'ticket', 'params'));
     }
 
     public function cekVoucher(Request $request)

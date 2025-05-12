@@ -22,6 +22,7 @@
     <link href="{{ url('assets') }}/vendor/aos/aos.css" rel="stylesheet">
     <link href="{{ url('assets') }}/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
     <link href="{{ url('assets') }}/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="{{ url('assets-admin') }}/vendor/fontawesome/css/all.min.css" rel="stylesheet" />
 
     <!-- Main CSS File -->
     <link href="{{ url('assets') }}/css/main.css" rel="stylesheet">
@@ -32,7 +33,7 @@
     <header id="header" class="header d-flex align-items-center sticky-top">
         <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
-            <a href="index.html" class="logo d-flex align-items-center me-auto">
+            <a href="{{route('home')}}" class="logo d-flex align-items-center me-auto">
                 <!-- Uncomment the line below if you also wish to use an image logo -->
                 <img src="{{ url('assets') }}/img/logo-bibsport-text-right.png" alt="">
             </a>

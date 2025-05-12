@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'event_name',
         'slug',
@@ -25,16 +22,12 @@ class Event extends Model
         'event_type',
         'instagram',
         'poster_url',
-        'user_id'
+        'user_id',
+        'event_type'
     ];
 
-    public function categories()
+    public function eventCategories()
     {
-        return $this->hasMany(TicketCatgeori::class);
-    }
-
-    public function admin()
-    {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->hasMany(EventCategories::class);
     }
 }
