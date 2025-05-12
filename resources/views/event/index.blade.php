@@ -10,7 +10,7 @@
                     <div class="d-flex">
                         <form action="">
                             <div class="input-group">
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" id="search">
                                 <button class="btn btn-primary" type="submit"><i
                                         class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
@@ -45,7 +45,7 @@
                 let query = $(this).val();
 
                 $.ajax({
-                    url: "{{ route('events.search') }}",
+                    url: "{{ route('event.search') }}",
                     type: "GET",
                     data: {
                         query: query

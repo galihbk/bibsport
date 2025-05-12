@@ -11,9 +11,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-7 col-xxl-12">
+                    <div class="col-md-5 col-xxl-12">
                         <div class="new-arrival-content position-relative">
-                            <h4>{{ $event->event_name }}</h4>
+                            <h4><a href="{{route('event.detail',$event->id)}}">{{ $event->event_name }}</a></h4>
+                            <div class=" comment-review star-rating">
+                                <span class="review-text">(34 reviews) / </span><a class="product-review" href="" data-bs-toggle="modal" data-bs-target="#reviewModal">Write a review?</a>
+                                <p class="price">$325.00</p>
+                            </div>
                             <p class="product-para">Tanggal: {{ \Carbon\Carbon::parse($event->start_date_event)->format('d M Y') }}</p>
                             <p class="product-para">Lokasi: {{ $event->location_event }}</p>
                             <p class="text-content">{{ \Str::limit(strip_tags($event->description), 100, '...') }}</p>

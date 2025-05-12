@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ticket_categories', function (Blueprint $table) {
+        Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('event_id')->constrained()->onDelete('cascade');
+            $table->foreignId('event_categories_id')->constrained('event_categories')->onDelete('cascade');
             $table->string('name_ticket');
             $table->integer('price');
-            $table->string('poster_ticket');
-            $table->integer('distance');
-            $table->integer('champion_1')->nullable();
-            $table->integer('champion_2')->nullable();
-            $table->integer('champion_3')->nullable();
+            $table->integer('kuota');
+            $table->date('ticket_start')->nullable();
+            $table->date('ticket_end')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ticket_catgeoris');
+        Schema::dropIfExists('tickets');
     }
 };

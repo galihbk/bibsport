@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Event;
+use App\Models\EventCategories;
+use App\Models\Ticket;
+use App\Models\TicketCatgeori;
+use App\Models\Voucher;
+use Illuminate\Support\Facades\Auth;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use Illuminate\Support\Facades\Log;
@@ -106,6 +111,103 @@ class EventController extends Controller
             ->latest()
             ->paginate(6);
 
-        return view('partials.card-event-admin', compact('events'))->render(); // partial view
+        return view('partials.card-event-admin', compact('events'))->render();
+    }
+    public function eventDetail($id)
+    {
+        $event = Event::findOrFail($id);
+        if ($event->user_id !== Auth::id()) {
+            abort(404);
+        }
+
+        return view('event.detail', compact('event'));
+    }
+    public function categoryStore(Request $request)
+    {
+        $request->validate([
+            'category_event' => 'required',
+            'distance' => 'required',
+            'poster' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $poster = $request->file('poster');
+        $filename = time() . '-' . $poster->getClientOriginalName();
+        $poster->storeAs('posters', $filename, 'public');
+
+        EventCategories::create([
+            'event_id' => $request->event_id,
+            'category_event' => $request->category_event,
+            'distance' => $request->distance,
+            'poster_category' => $filename,
+        ]);
+
+        return response()->json(['message' => 'Kategori berhasil ditambahkan!']);
+    }
+    public function categories(Request $request)
+    {
+        $eventId = $request->get('event_id');
+
+        $events = EventCategories::with(['tickets.vouchers'])
+            ->where('event_id', $eventId)
+            ->get();
+
+        return view('partials.card-event-categories-admin', compact('events'))->render();
+    }
+
+    public function ticketStore(Request $request)
+    {
+        $request->validate([
+            'name_ticket'    => 'required',
+            'price'          => 'required',
+            'quota'          => 'required|integer',
+            'ticket_start'   => 'required|date',
+            'ticket_end'     => 'required|date|after_or_equal:ticket_start',
+            'event_category_id' => 'required|exists:event_categories,id',
+        ]);
+
+        $price = preg_replace('/[^0-9]/', '', $request->price);
+
+        Ticket::create([
+            'event_categories_id' => $request->event_category_id,
+            'name_ticket'       => $request->name_ticket,
+            'price'             => $price,
+            'quota'             => $request->quota,
+            'ticket_start'      => $request->ticket_start,
+            'ticket_end'        => $request->ticket_end,
+        ]);
+
+        return response()->json(['message' => 'Tiket berhasil ditambahkan!']);
+    }
+    public function voucherStore(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|string|unique:vouchers,code',
+            'voucher_type' => 'required|in:fixed,percent',
+            'fixed_amount' => 'required_if:voucher_type,fixed|nullable',
+            'percent_amount' => 'required_if:voucher_type,percent|nullable|numeric',
+            'quota' => 'required|integer|min:1',
+            'voucher_end' => 'required|date',
+        ]);
+        if ($request->voucher_type == 'percent') {
+            $percentAmount = preg_replace('/[^0-9]/', '', $request->percent_amount);
+            if ($percentAmount == '10') {
+                $value = $percentAmount;
+            } else {
+                $value = preg_replace('/[^0-9]/', '', $request->percent_amount);
+            }
+        } else if ($request->voucher_type == 'fixed') {
+            $value = preg_replace('/[^0-9]/', '', $request->fixed_amount);
+        }
+
+        Voucher::create([
+            'ticket_id' => $request->ticket_id,
+            'code'       => $request->code,
+            'discount_type'             => $request->voucher_type,
+            'discount_value'             => $value,
+            'quota'             => $request->quota,
+            'discount_end'        => $request->voucher_end,
+        ]);
+
+        return response()->json(['message' => 'Voucher berhasil ditambahkan!']);
     }
 }

@@ -55,8 +55,4 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new CustomVerifyEmail);
     }
-    public function detailUser()
-    {
-        return $this->hasOne(DetailUser::class, 'user_id', 'id');
-    }
 }

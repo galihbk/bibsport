@@ -169,6 +169,7 @@
     <script src="{{ url('assets-admin') }}/vendor/jquery-validation/jquery.validate.min.js"></script>
     <script src="{{ url('assets-admin') }}/vendor/ckeditor/ckeditor.js"></script>
     <!-- Form validate init -->
+    <script src="{{ url('assets-admin') }}/js/dashboard/cms.js"></script>
     <script src="{{ url('assets-admin') }}/js/plugins-init/jquery.validate-init.js"></script>
     <script src="{{ url('assets-admin') }}/vendor/jquery-smartwizard/dist/js/jquery.smartWizard.js"></script>
     <script src="{{ url('assets-admin') }}/vendor/jquery-nice-select/js/jquery.nice-select.min.js"></script>

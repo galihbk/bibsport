@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ticket_category_id')->constrained()->onDelete('cascade');
+            $table->foreignId('ticket_id')->constrained()->onDelete('cascade');
             $table->string('code')->unique();
             $table->enum('discount_type', ['percent', 'fixed']);
             $table->integer('discount_value');
             $table->integer('quota')->default(0);
+            $table->integer('quota_used')->default(0);
             $table->date('discount_end');
             $table->timestamps();
         });
