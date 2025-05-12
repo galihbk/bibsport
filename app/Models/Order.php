@@ -33,4 +33,8 @@ class Order extends Model
         'tanggal_pembayaran',
         'jumlah_bayar',
     ];
+    public function ticket()
+    {
+        return $this->belongsTo(Ticket::class, 'ticket_id'); // Relasi ke EventCategories
+    }
 }

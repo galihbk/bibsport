@@ -24,4 +24,8 @@ class Ticket extends Model
     {
         return $this->hasMany(Voucher::class); // Relasi ke Voucher
     }
+    public function orders()
+    {
+        return $this->hasMany(Order::class); // Relasi ke Ticket
+    }
 }
