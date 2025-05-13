@@ -6,7 +6,6 @@
     <title>Invoice</title>
     <style>
         body {
-            width: 595px;
             height: 842px;
             margin: 0;
             padding: 0;
