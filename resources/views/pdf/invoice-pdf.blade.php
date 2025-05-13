@@ -10,7 +10,7 @@
             font-size: 14px;
             margin: 0;
             padding: 0;
-            background-image: url('{{ public_path("assets/img/bibsport-opacity.png") }}');
+            background-image: url("{{ asset('assets/img/bibsport-opacity.png') }}");
             background-repeat: repeat;
             background-position: center;
             background-size: contain;
