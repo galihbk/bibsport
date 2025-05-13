@@ -14,6 +14,7 @@
             background-repeat: repeat;
             background-position: center;
             background-size: contain;
+            background-size: 100px;
         }
 
         .card-header {
