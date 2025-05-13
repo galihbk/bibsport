@@ -22,10 +22,19 @@ class HomeController extends Controller
     {
         $order_id = 'RUN-3-1747050578';
         $pendaftar = Order::with('ticket.eventCategory.event.user')->where('order_id', $order_id)->first();
-        $qrPath = 'app/qrcodes/' . $order_id . '.png';
-        Storage::put($qrPath, QrCode::format('png')->size(200)->generate($order_id));
-        $qrPublicPath = storage_path($qrPath);
-        return view('pdf.invoice-pdf', compact('pendaftar', 'qrPath'));
+        $qrPath = 'qrcodes/' . $order_id . '.png';
+
+        // Cek apakah file QR code sudah ada
+        if (!Storage::exists($qrPath)) {
+            // Jika QR code belum ada, buat dan simpan QR code
+            Storage::put($qrPath, QrCode::format('png')->size(200)->generate($order_id));
+            $qrPublicPath = public_path($qrPath); // Mendapatkan path penyimpanan
+        } else {
+            // Jika QR code sudah ada, gunakan path yang sudah ada
+            $qrPublicPath = public_path($qrPath); // Mendapatkan path penyimpanan
+        }
+
+        return view('pdf.invoice-pdf', compact('pendaftar', 'qrPublicPath'));
         die;
         $folder = storage_path('app/invoices');
         if (!File::exists($folder)) {

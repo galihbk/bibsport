@@ -160,7 +160,7 @@
                     </td>
                     <td style="width: 20%;">
                         <div class="col col-3 mt-3">
-                            <img src="{{$qrPath}}" alt="" style="width: 100%;">
+                            <img src="{{$qrPublicPath}}" alt="" style="width: 100%;">
                             <br>
                             <div><strong>{{$pendaftar->order_id}}</strong></div>
                         </div>
