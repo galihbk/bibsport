@@ -10,6 +10,10 @@
             font-size: 14px;
             margin: 0;
             padding: 0;
+            background-image: url('{{ public_path("assets/img/bibsport-opacity.png") }}');
+            background-repeat: repeat;
+            background-position: center;
+            background-size: contain;
         }
 
         .card-header {
@@ -164,16 +168,16 @@
                         <div>Phone: {{$pendaftar->no_wa}}</div>
                     </td>
                     <td style="width: 30%;">
-                        <div class="col col-3 mt-3">
-                            <img src="{{asset('qrcodes/'.$pendaftar->order_id.'.png')}}" alt="" style="width: 150px;">
-                        </div>
-                    </td>
-                    <td style="width: 30%;">
                         <div class="col col-9">
                             <div class="brand-logo mb-3">
                                 <img class="logo-abbr me-2" width="200" src="{{ asset('assets/img/logo-bibsport-text-right.png') }}" alt="">
                             </div>
                             <span><strong class="d-block">www.bibsport.id</strong>
+                        </div>
+                    </td>
+                    <td style="width: 30%;">
+                        <div class="col col-3 mt-3">
+                            <img src="{{asset('qrcodes/'.$pendaftar->order_id.'.png')}}" alt="" style="width: 150px;">
                         </div>
                     </td>
                 </tr>
