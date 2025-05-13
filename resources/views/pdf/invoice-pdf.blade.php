@@ -23,6 +23,7 @@
             float: right;
         }
 
+
         .card-body {
             padding: 20px;
         }
@@ -128,9 +129,21 @@
 <body>
 
     <div class="card-header">
-        Invoice <strong>01/01/01/2018</strong>
-        <span class="float-end"><strong>Status:</strong> Success</span>
+        <table width="100%" style="border: none;">
+            <tr>
+                <td align="left">
+                    Invoice: <strong>{{ $pendaftar->order_id }}</strong>
+                </td>
+                <td align="center">
+                    <strong>01/01/01/2018</strong>
+                </td>
+                <td align="right">
+                    <strong>Status:</strong> Success
+                </td>
+            </tr>
+        </table>
     </div>
+
 
     <div class="card-body">
         <table>
@@ -161,8 +174,6 @@
                     <td style="width: 30%;">
                         <div class="col col-3 mt-3">
                             <img src="{{asset('qrcodes/'.$pendaftar->order_id.'.png')}}" alt="" style="width: 150px;">
-                            <br>
-                            <strong>{{$pendaftar->order_id}}</strong>
                         </div>
                     </td>
                 </tr>
