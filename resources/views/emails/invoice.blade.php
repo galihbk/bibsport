@@ -7,7 +7,7 @@
 </head>
 
 <body>
-    <h2>Terima kasih, {{ $pendaftar->nama_lengkap }}</h2>
+    <h2>Terima kasih, {{ $order->nama_lengkap }}</h2>
 
     <p>Kami dengan senang hati menginformasikan bahwa pembayaran Anda telah berhasil kami terima.</p>
 
@@ -22,10 +22,10 @@
         </ul>
         <ul style="list-style: none; padding: 0;">
             <li>: {{ $order->order_id }}</li>
-            <li>: {{$pendaftar->ticket->eventCategory->event->event_name}}</li>
-            <li>: {{$pendaftar->ticket->eventCategory->category_event}} - {{$pendaftar->ticket->eventCategory->distance}}K</li>
-            <li>: {{$pendaftar->ticket->name_ticket}}</li>
-            <li>: {{ $pendaftar->bib }}</li>
+            <li>: {{$order->ticket->eventCategory->event->event_name}}</li>
+            <li>: {{$order->ticket->eventCategory->category_event}} - {{$order->ticket->eventCategory->distance}}K</li>
+            <li>: {{$order->ticket->name_ticket}}</li>
+            <li>: {{ $order->bib }}</li>
             <li>: Success</li>
         </ul>
     </div>

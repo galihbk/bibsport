@@ -32,15 +32,28 @@ class InvoicePaidMail extends Mailable
     public function build()
     {
 
-        // Pastikan path ke file PDF sudah benar
-        $pdfPath = storage_path('app/private/invoices/invoice-' . $this->order->order_id . '.pdf');
+        try {
+            $pdfPath = storage_path('app/private/invoices/invoice-' . $this->order->order_id . '.pdf');
 
-        // Kirim email dengan attachment PDF
-        return $this->subject('Invoice Pembayaran - ' . $this->order->order_id)
-            ->view('emails.invoice')  // View email
-            ->attach($pdfPath, [
-                'as' => 'Invoice-' . $this->order->order_id . '.pdf',
-                'mime' => 'application/pdf',
+            if (!file_exists($pdfPath)) {
+                Log::error('PDF invoice not found.', ['path' => $pdfPath]);
+                throw new \Exception("File PDF tidak ditemukan di path: " . $pdfPath);
+            }
+
+            return $this->subject('Invoice Pembayaran - ' . $this->order->order_id)
+                ->view('emails.invoice')
+                ->attach($pdfPath, [
+                    'as' => 'Invoice-' . $this->order->order_id . '.pdf',
+                    'mime' => 'application/pdf',
+                ]);
+        } catch (\Exception $e) {
+            Log::error('Gagal mengirim email invoice.', [
+                'order_id' => $this->order->order_id,
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
             ]);
+
+            throw $e;
+        }
     }
 }

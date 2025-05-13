@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Middleware\CheckVerified;
+use App\Mail\InvoicePaidMail;
+use App\Models\Order;
+use Illuminate\Support\Facades\Mail;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/event-list', [HomeController::class, 'eventList'])->name('home.event-list');
@@ -18,7 +21,26 @@ Route::post('/cek-voucher', [HomeController::class, 'cekVoucher'])->name('home.c
 Route::get('/events/slug/{slug}', [HomeController::class, 'eventDetail'])->name('home.event-detail');
 Route::post('/contact/send', [HomeController::class, 'send'])->name('home.send');
 Route::get('/event-success-payment', [HomeController::class, 'successPage'])->name('event.success.payment');
+// Route::get('/test-send-invoice/{order_id}', function ($order_id) {
+//     $order = Order::with('ticket.eventCategory')->where('order_id', $order_id)->first();
 
+//     if (!$order) {
+//         return "Order dengan ID $order_id tidak ditemukan.";
+//     }
+
+//     try {
+//         Mail::to($order->email)->send(new InvoicePaidMail($order));
+//         return "Email invoice berhasil dikirim ke " . $order->email;
+//     } catch (\Exception $e) {
+//         \Log::error('Gagal mengirim email invoice.', [
+//             'order_id' => $order_id,
+//             'message' => $e->getMessage(),
+//             'trace' => $e->getTraceAsString(),
+//         ]);
+
+//         return "Gagal mengirim email: " . $e->getMessage();
+//     }
+// });
 
 Route::middleware(['auth', 'verified'])->group(function () {
     // Rute untuk profil
