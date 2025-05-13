@@ -6,13 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Event;
 use App\Models\EventCategories;
+use App\Models\Order;
 use App\Models\Ticket;
-use App\Models\TicketCatgeori;
 use App\Models\Voucher;
 use Illuminate\Support\Facades\Auth;
 use HTMLPurifier;
+use Yajra\DataTables\Facades\DataTables;
 use HTMLPurifier_Config;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\Translation\Dumper\DumperInterface;
 
 class EventController extends Controller
 {
@@ -147,11 +149,49 @@ class EventController extends Controller
     {
         $eventId = $request->get('event_id');
 
-        $events = EventCategories::with(['tickets.vouchers'])
-            ->where('event_id', $eventId)
-            ->get();
+        $events = EventCategories::with(['tickets.orders'])->where('event_id', $eventId)->get();
 
-        return view('partials.card-event-categories-admin', compact('events'))->render();
+        foreach ($events as $category) {
+            $totalPendaftar = 0;
+            $totalL = 0;
+            $totalP = 0;
+
+            foreach ($category->tickets as $ticket) {
+                foreach ($ticket->orders as $order) {
+                    $totalPendaftar++;
+
+                    if ($order->jenis_kelamin == 'L') {
+                        $totalL++;
+                    } elseif ($order->jenis_kelamin == 'P') {
+                        $totalP++;
+                    }
+                }
+            }
+        }
+
+
+        return view('partials.card-event-categories-admin', compact('events', 'totalPendaftar', 'totalP', 'totalL'))->render();
+    }
+    public function getPesertaTerdaftar(Request $request)
+    {
+        $orders = Order::with(['ticket.eventCategory']);
+
+        if ($request->ajax()) {
+            return DataTables::eloquent($orders)
+                ->addColumn('kategori_event', function ($order) {
+                    return $order->ticket->eventCategory->category_event ?? '-';
+                })
+                ->addColumn('nama_tiket', function ($order) {
+                    return $order->ticket->name_ticket ?? '-';
+                })
+                ->addColumn('action', function ($order) {
+                    return '<button class="btn btn-primary">Action</button>';
+                })
+                ->editColumn('tanggal_terdaftar', function ($order) {
+                    return optional($order->tanggal_pembayaran)->format('d/m/Y');
+                })
+                ->make(true);
+        }
     }
 
     public function ticketStore(Request $request)

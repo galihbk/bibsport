@@ -53,6 +53,67 @@
         <div id="ticket-list">
 
         </div>
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">List Peserta</h4>
+                <a href="javascript:void(0)" id="refreshData"><i class="fas fa-refresh"></i></a>
+            </div>
+            <div class="card-body">
+                <div class="default-tab">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#home" aria-selected="true" role="tab">Terdaftar</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" data-bs-toggle="tab" href="#profile" aria-selected="false" role="tab" tabindex="-1">Tidak Terdaftar</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade active show" id="home" role="tabpanel">
+                            <div class="pt-4">
+                                <div class="table-responsive">
+                                    <table id="peserta-terdaftar" class="display">
+                                        <thead>
+                                            <tr>
+                                                <th>BIB</th>
+                                                <th>Nama Lengkap</th>
+                                                <th>Jenis Kelamin</th>
+                                                <th>Asal</th>
+                                                <th>Email</th>
+                                                <th>Nomor WA</th>
+                                                <th>Kategori Event</th>
+                                                <th>Tanggal Terdaftar</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="profile" role="tabpanel">
+                            <div class="pt-4">
+                                <div class="table-responsive">
+                                    <table id="peserta-tidak-terdaftar" class="display">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Nama Lengkap</th>
+                                                <th>Jenis Kelamin</th>
+                                                <th>Asal</th>
+                                                <th>Email</th>
+                                                <th>Nomor WA</th>
+                                                <th>Kategori Event</th>
+                                                <th>Tanggal Mendaftar</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="modal fade" id="modalCategory" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-basic">
@@ -276,6 +337,52 @@
                     }
                 });
             };
+            $('#peserta-terdaftar').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('event.get-peserta-terdaftar') }}",
+                columns: [{
+                        data: 'bib',
+                        name: 'bib'
+                    },
+                    {
+                        data: 'nama_lengkap',
+                        name: 'nama_lengkap'
+                    },
+                    {
+                        data: 'jenis_kelamin',
+                        name: 'jenis_kelamin'
+                    },
+                    {
+                        data: 'kabupaten',
+                        name: 'kabupaten'
+                    },
+                    {
+                        data: 'email',
+                        name: 'email'
+                    },
+                    {
+                        data: 'no_wa',
+                        name: 'no_wa'
+                    },
+                    {
+                        data: 'kategori_event',
+                        name: 'kategori_event',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'tanggal_terdaftar',
+                        name: 'tanggal_terdaftar'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    }
+                ]
+            });
             $('#eventCategoryForm').submit(function(e) {
                 e.preventDefault();
 

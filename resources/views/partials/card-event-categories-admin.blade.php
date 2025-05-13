@@ -30,13 +30,13 @@
                         <div class="text-center">
                             <div class="row">
                                 <div class="col">
-                                    <h3 class="m-b-0">150</h3><span>Total</span>
+                                    <h3 class="m-b-0">{{ $totalPendaftar }}</h3><span>Total</span>
                                 </div>
                                 <div class="col">
-                                    <h3 class="m-b-0">140</h3><span>Pria</span>
+                                    <h3 class="m-b-0">{{$totalL}}</h3><span>Pria</span>
                                 </div>
                                 <div class="col">
-                                    <h3 class="m-b-0">45</h3><span>Wanita</span>
+                                    <h3 class="m-b-0">{{$totalP}}</h3><span>Wanita</span>
                                 </div>
                             </div>
                         </div>

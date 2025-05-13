@@ -192,7 +192,7 @@
                         <th class="center text-black">#</th>
                         <th class="text-black">Nama event</th>
                         <th class="text-black">Kategori Event</th>
-                        <th class="right text-black">Jenis Tiket</th>
+                        <th class="center text-black">Jenis Tiket</th>
                         <th class="center text-black">QTY</th>
                         <th class="right text-black">Harga</th>
                     </tr>
@@ -202,7 +202,7 @@
                         <td class="center">1</td>
                         <td class="left strong">{{$order->ticket->eventCategory->event->event_name}}</td>
                         <td class="left">{{$order->ticket->eventCategory->category_event}} - {{$order->ticket->eventCategory->distance}}K</td>
-                        <td class="right">{{$order->ticket->name_ticket}}</td>
+                        <td class="left">{{$order->ticket->name_ticket}}</td>
                         <td class="center">1</td>
                         <td class="right">Rp. {{ number_format($order->ticket->price, 0, ',', '.') }}</td>
                     </tr>

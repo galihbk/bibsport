@@ -22,6 +22,7 @@ class MidtransController extends Controller
         $order_id = $notif->order_id;
         $transaction_status = $notif->transaction_status;
         $fraud_status = $notif->fraud_status;
+        $jumlah_bayar = $notif->gross_amount;
 
         $order = Order::with('ticket.eventCategory')->where('order_id', $order_id)->first();
 
@@ -44,13 +45,11 @@ class MidtransController extends Controller
             $order->status_pembayaran = 'failed';
         }
 
-        // Jika pembayaran berhasil, generate BIB
         if ($order->status_pembayaran === 'paid' && !$order->bib) {
             $gender = $order->jenis_kelamin; // L atau P
             $eventCategory = $order->ticket->eventCategory;
             $format = $gender === 'L' ? $eventCategory->bib_format_m : $eventCategory->bib_format_f;
 
-            // Hitung jumlah peserta dengan BIB yang sudah diberikan
             $count = Order::where('status_pembayaran', 'paid')
                 ->where('jenis_kelamin', $gender)
                 ->whereHas('ticket', function ($q) use ($eventCategory) {
@@ -68,6 +67,7 @@ class MidtransController extends Controller
             $order->metode_pembayaran = $notif->payment_type ?? null;
             if ($order->status_pembayaran === 'paid') {
                 $order->tanggal_pembayaran = now();
+                $order->jumlah_bayar = $jumlah_bayar;
             }
             $order->save();
             $qrPath = 'qrcodes/' . $order_id . '.png';
