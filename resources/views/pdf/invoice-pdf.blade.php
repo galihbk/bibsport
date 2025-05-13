@@ -6,14 +6,16 @@
     <title>Invoice</title>
     <style>
         body {
-            font-family: sans-serif;
-            font-size: 14px;
+            width: 595px;
+            height: 842px;
             margin: 0;
             padding: 0;
-            background-image: url("{{ asset('assets/img/bibsport-opacity.png') }}");
-            background-position: center center;
-            background-size: cover;
+            font-family: sans-serif;
+            font-size: 14px;
+            background-image: url('{{ public_path("assets/img/logo-bibsport-transparent.png") }}');
             background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 70%;
         }
 
         .card-header {
