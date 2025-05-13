@@ -132,10 +132,10 @@
         <table width="100%" style="border: none;">
             <tr>
                 <td align="left">
-                    <strong>{{ $pendaftar->order_id }}</strong>
+                    <strong>{{ \Carbon\Carbon::parse($pendaftar->tanggal_pembayaran)->format('d/m/Y') }}</strong>
                 </td>
                 <td align="center">
-                    <strong>{{ \Carbon\Carbon::parse($pendaftar->tanggal_pembayaran)->format('d/m/Y') }}</strong>
+                    <strong>{{ $pendaftar->order_id }}</strong>
                 </td>
                 <td align="right">
                     <strong>Status:</strong> Success
