@@ -11,7 +11,7 @@
             padding: 0;
             font-family: sans-serif;
             font-size: 14px;
-            background-image: url('{{ public_path("assets/img/logo-bibsport-transparent.png") }}');
+            background-image: url("{{ asset('assets/img/bibsport-opacity.png') }}");
             background-repeat: no-repeat;
             background-position: center center;
             background-size: 70%;
