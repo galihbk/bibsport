@@ -11,10 +11,9 @@
             margin: 0;
             padding: 0;
             background-image: url("{{ asset('assets/img/bibsport-opacity.png') }}");
-            background-repeat: repeat;
-            background-position: center;
-            background-size: contain;
-            background-size: 150px 150px;
+            background-position: center center;
+            background-size: 300px auto;
+            background-repeat: no-repeat;
         }
 
         .card-header {
