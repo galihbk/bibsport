@@ -150,17 +150,17 @@
                         <div>Email: {{$pendaftar->email}}</div>
                         <div>Phone: {{$pendaftar->no_wa}}</div>
                     </td>
-                    <td style="width: 40%;">
+                    <td style="width: 30%;">
                         <div class="col col-9">
                             <div class="brand-logo mb-3">
-                                <img class="logo-abbr me-2" width="200" src="{{ public_path('assets/img/logo-bibsport-text-right.png') }}" alt="">
+                                <img class="logo-abbr me-2" width="200" src="{{ asset('assets/img/logo-bibsport-text-right.png') }}" alt="">
                             </div>
                             <span><strong class="d-block">www.bibsport.id</strong>
                         </div>
                     </td>
-                    <td style="width: 20%;">
+                    <td style="width: 30%;">
                         <div class="col col-3 mt-3">
-                            <img src="{{$qrPublicPath}}" alt="" style="width: 100%;">
+                            <img src="{{asset('qrcodes/'.$pendaftar->order_id.'.png')}}" alt="" style="width: 100%;">
                             <br>
                             <div><strong>{{$pendaftar->order_id}}</strong></div>
                         </div>
