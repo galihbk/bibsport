@@ -10,15 +10,37 @@ use App\Models\User;
 use App\Models\Voucher;
 use Midtrans\Snap;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        return view('home.index');
+        $order_id = 'RUN-3-1747050578';
+        $pendaftar = Order::with('ticket.eventCategory.event.user')->where('order_id', $order_id)->first();
+        $qrPath = 'app/qrcodes/' . $order_id . '.png';
+        Storage::put($qrPath, QrCode::format('png')->size(200)->generate($order_id));
+        $qrPublicPath = storage_path($qrPath);
+        return view('pdf.invoice-pdf', compact('pendaftar', 'qrPath'));
+        die;
+        $folder = storage_path('app/invoices');
+        if (!File::exists($folder)) {
+            File::makeDirectory($folder, 0755, true);
+        }
+
+        // 2. Buat dan simpan file PDF
+        $pdf = Pdf::loadView('pdf.invoice-pdf', compact('pendaftar'));
+        $pdfPath = $folder . '/invoice-' . $pendaftar->order_id . '.pdf';
+        $pdf->save($pdfPath);
     }
-    public function eventList() {}
+    public function test()
+    {
+        Mail::to($order->email)->send(new InvoicePaid($order));
+    }
     public function contact()
     {
         return view('home.contact');

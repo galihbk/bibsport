@@ -65,8 +65,10 @@ class MidtransController extends Controller
             $bib = preg_replace('/#+/', $urutan, $format);
             $pendaftar->bib = $bib;
         }
-
-        // Simpan perubahan status pembayaran
+        $pendaftar->metode_pembayaran = $notif->payment_type ?? null;
+        if ($pendaftar->status_pembayaran === 'paid') {
+            $pendaftar->tanggal_pembayaran = now();
+        }
         $pendaftar->save();
 
         return response()->json(['message' => 'Callback processed'], 200);

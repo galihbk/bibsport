@@ -30,4 +30,8 @@ class Event extends Model
     {
         return $this->hasMany(EventCategories::class);
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class); // Relasi ke Event
+    }
 }
