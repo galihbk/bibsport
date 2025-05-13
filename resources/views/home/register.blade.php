@@ -102,24 +102,24 @@
 
                                 <div class="form-group col-lg-6">
                                     <label class="col-form-label">Provinsi</label>
-                                    <select name="provinsi" id="provinsi" class="form-control" required>
+                                    <select name="provinsi-int" id="provinsi" class="form-control" required>
                                         <option value="">--pilih--</option>
                                     </select>
                                     @error('provinsi')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                    <input type="hidden" id="provinsi-nama" class="form-control mt-2" readonly>
+                                    <input type="hidden" id="provinsi-nama" name="provinsi" class="form-control mt-2" readonly>
                                 </div>
 
                                 <div class="form-group col-lg-6">
                                     <label class="col-form-label">Kabupaten/kota</label>
-                                    <select name="kabupaten" id="kabupaten" class="form-control" required>
+                                    <select name="kabupaten-int" id="kabupaten" class="form-control" required>
                                         <option value="">--pilih--</option>
                                     </select>
                                     @error('kabupaten')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                    <input type="hidden" id="kabupaten-nama" class="form-control mt-2" readonly>
+                                    <input type="hidden" id="kabupaten-nama" name="kabupaten" class="form-control mt-2" readonly>
                                 </div>
 
                                 <div class="form-group col-lg-12">

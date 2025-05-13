@@ -33,7 +33,7 @@ class InvoicePaidMail extends Mailable
     {
 
         // Pastikan path ke file PDF sudah benar
-        $pdfPath = storage_path('app/invoices/invoice-' . $this->order->order_id . '.pdf');
+        $pdfPath = storage_path('app/private/invoices/invoice-' . $this->order->order_id . '.pdf');
 
         // Kirim email dengan attachment PDF
         return $this->subject('Invoice Pembayaran - ' . $this->order->order_id)

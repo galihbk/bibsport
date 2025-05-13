@@ -23,31 +23,31 @@ class MidtransController extends Controller
         $transaction_status = $notif->transaction_status;
         $fraud_status = $notif->fraud_status;
 
-        $pendaftar = Order::with('ticket.eventCategory')->where('order_id', $order_id)->first();
+        $order = Order::with('ticket.eventCategory')->where('order_id', $order_id)->first();
 
-        if (!$pendaftar) {
+        if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }
 
         // Proses status transaksi
         if ($transaction_status == 'capture') {
             if ($fraud_status == 'challenge') {
-                $pendaftar->status_pembayaran = 'challenge';
+                $order->status_pembayaran = 'challenge';
             } elseif ($fraud_status == 'accept') {
-                $pendaftar->status_pembayaran = 'paid';
+                $order->status_pembayaran = 'paid';
             }
         } elseif ($transaction_status == 'settlement') {
-            $pendaftar->status_pembayaran = 'paid';
+            $order->status_pembayaran = 'paid';
         } elseif ($transaction_status == 'pending') {
-            $pendaftar->status_pembayaran = 'pending';
+            $order->status_pembayaran = 'pending';
         } elseif (in_array($transaction_status, ['deny', 'expire', 'cancel'])) {
-            $pendaftar->status_pembayaran = 'failed';
+            $order->status_pembayaran = 'failed';
         }
 
         // Jika pembayaran berhasil, generate BIB
-        if ($pendaftar->status_pembayaran === 'paid' && !$pendaftar->bib) {
-            $gender = $pendaftar->jenis_kelamin; // L atau P
-            $eventCategory = $pendaftar->ticket->eventCategory;
+        if ($order->status_pembayaran === 'paid' && !$order->bib) {
+            $gender = $order->jenis_kelamin; // L atau P
+            $eventCategory = $order->ticket->eventCategory;
             $format = $gender === 'L' ? $eventCategory->bib_format_m : $eventCategory->bib_format_f;
 
             // Hitung jumlah peserta dengan BIB yang sudah diberikan
@@ -64,12 +64,12 @@ class MidtransController extends Controller
             $urutan = str_pad($count + 1, $placeholderLength, '0', STR_PAD_LEFT);
 
             $bib = preg_replace('/#+/', $urutan, $format);
-            $pendaftar->bib = $bib;
-            $pendaftar->metode_pembayaran = $notif->payment_type ?? null;
-            if ($pendaftar->status_pembayaran === 'paid') {
-                $pendaftar->tanggal_pembayaran = now();
+            $order->bib = $bib;
+            $order->metode_pembayaran = $notif->payment_type ?? null;
+            if ($order->status_pembayaran === 'paid') {
+                $order->tanggal_pembayaran = now();
             }
-            $pendaftar->save();
+            $order->save();
             $qrPath = 'qrcodes/' . $order_id . '.png';
             $qrFullPath = public_path($qrPath);
 
@@ -82,15 +82,15 @@ class MidtransController extends Controller
 
                 file_put_contents($qrFullPath, $qrImage);
             }
-            $folder = storage_path('app/invoices');
+            $folder = storage_path('app/private/invoices');
             if (!File::exists($folder)) {
                 File::makeDirectory($folder, 0755, true);
             }
 
-            $pdf = Pdf::loadView('pdf.invoice-pdf', compact('pendaftar'));
-            $pdfPath = $folder . '/invoice-' . $pendaftar->order_id . '.pdf';
+            $pdf = Pdf::loadView('pdf.invoice-pdf', compact('order'));
+            $pdfPath = $folder . '/invoice-' . $order->order_id . '.pdf';
             $pdf->save($pdfPath);
-            Mail::to($pendaftar->email)->send(new \App\Mail\InvoicePaidMail($pendaftar));
+            Mail::to($order->email)->send(new \App\Mail\InvoicePaidMail($order));
         }
 
         return response()->json(['message' => 'Callback processed'], 200);

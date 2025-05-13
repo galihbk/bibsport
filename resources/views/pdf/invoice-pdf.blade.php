@@ -11,7 +11,7 @@
             padding: 0;
             font-family: sans-serif;
             font-size: 14px;
-            background-image: url("{{ asset('assets/img/bibsport-opacity.png') }}");
+            background-image: url("{{ 'file://' . public_path('assets/img/bibsport-opacity.png') }}");
             background-repeat: no-repeat;
             background-position: center center;
             background-size: 70%;
@@ -137,10 +137,10 @@
         <table width="100%" style="border: none;">
             <tr>
                 <td align="left">
-                    <strong>{{ \Carbon\Carbon::parse($pendaftar->tanggal_pembayaran)->format('d/m/Y') }}</strong>
+                    <strong>{{ \Carbon\Carbon::parse($order->tanggal_pembayaran)->format('d/m/Y') }}</strong>
                 </td>
                 <td align="center">
-                    <strong>{{ $pendaftar->order_id }}</strong>
+                    <strong>{{ $order->order_id }}</strong>
                 </td>
                 <td align="right">
                     <strong> Success</strong>
@@ -156,29 +156,29 @@
                 <tr>
                     <td style="width: 30%;">
                         <div>From:</div>
-                        <div><strong>{{$pendaftar->ticket->eventCategory->event->user->name}}</strong></div>
-                        <div>{{$pendaftar->ticket->eventCategory->event->user->address}}</div>
-                        <div>Email: {{$pendaftar->ticket->eventCategory->event->user->email}}</div>
-                        <div>Phone: {{$pendaftar->ticket->eventCategory->event->user->phone}}</div>
+                        <div><strong>{{$order->ticket->eventCategory->event->user->name}}</strong></div>
+                        <div>{{$order->ticket->eventCategory->event->user->address}}</div>
+                        <div>Email: {{$order->ticket->eventCategory->event->user->email}}</div>
+                        <div>Phone: {{$order->ticket->eventCategory->event->user->phone}}</div>
                     </td>
                     <td style="width: 30%;">
                         <div>To:</div>
-                        <div><strong>{{$pendaftar->nama_lengkap}}</strong></div>
-                        <div>{{$pendaftar->alamat}}</div>
-                        <div>Email: {{$pendaftar->email}}</div>
-                        <div>Phone: {{$pendaftar->no_wa}}</div>
+                        <div><strong>{{$order->nama_lengkap}}</strong></div>
+                        <div>{{$order->alamat}}</div>
+                        <div>Email: {{$order->email}}</div>
+                        <div>Phone: {{$order->no_wa}}</div>
                     </td>
                     <td style="width: 30%;">
                         <div class="col col-9">
                             <div class="brand-logo mb-3">
-                                <img class="logo-abbr me-2" width="200" src="{{ asset('assets/img/logo-bibsport-text-right.png') }}" alt="">
+                                <img class="logo-abbr me-2" width="200" src="{{ 'file://' . public_path('assets/img/logo-bibsport-text-right.png') }}" alt="">
                             </div>
-                            <span><strong class="d-block">www.bibsport.id</strong>
+                            <span><strong class=" d-block">www.bibsport.id</strong>
                         </div>
                     </td>
                     <td style="width: 30%;">
                         <div class="col col-3 mt-3">
-                            <img src="{{asset('qrcodes/'.$pendaftar->order_id.'.png')}}" alt="" style="width: 150px;">
+                            <img src="{{ 'file://' . public_path('qrcodes/' . $order->order_id . '.png') }}" alt="" style="width: 130px;">
                         </div>
                     </td>
                 </tr>
@@ -200,11 +200,11 @@
                 <tbody>
                     <tr>
                         <td class="center">1</td>
-                        <td class="left strong">{{$pendaftar->ticket->eventCategory->event->event_name}}</td>
-                        <td class="left">{{$pendaftar->ticket->eventCategory->category_event}} - {{$pendaftar->ticket->eventCategory->distance}}K</td>
-                        <td class="right">{{$pendaftar->ticket->name_ticket}}</td>
+                        <td class="left strong">{{$order->ticket->eventCategory->event->event_name}}</td>
+                        <td class="left">{{$order->ticket->eventCategory->category_event}} - {{$order->ticket->eventCategory->distance}}K</td>
+                        <td class="right">{{$order->ticket->name_ticket}}</td>
                         <td class="center">1</td>
-                        <td class="right">Rp. {{ number_format($pendaftar->ticket->price, 0, ',', '.') }}</td>
+                        <td class="right">Rp. {{ number_format($order->ticket->price, 0, ',', '.') }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -216,8 +216,8 @@
                 <table class="table table-clear">
                     <tbody>
                         @php
-                        $price = $pendaftar->ticket->price;
-                        $voucher = $pendaftar->voucher_code; // Misalnya 'ABC123'
+                        $price = $order->ticket->price;
+                        $voucher = $order->voucher_code; // Misalnya 'ABC123'
                         $voucherData = App\Models\Voucher::where('code', $voucher)->first();
 
                         $discount = 0;

@@ -48,9 +48,8 @@
     document.getElementById('pay-button').addEventListener('click', function() {
         window.snap.pay('{{$snapToken}}', {
             onSuccess: function(result) {
-                alert("Pembayaran berhasil!");
                 console.log(result);
-                window.location.href = `event/payment/payment-status?order_id=${result.order_id}`;
+                window.location.href = "{{ route('home.payment-status') }}?order_id=" + result.order_id;
             },
             onPending: function(result) {
                 alert("Menunggu pembayaran...");
