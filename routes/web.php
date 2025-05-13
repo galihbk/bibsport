@@ -5,9 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
 use App\Http\Middleware\CheckVerified;
-use App\Models\Order;
-use App\Mail\InvoicePaid;
-use Illuminate\Support\Facades\Mail;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/event-list', [HomeController::class, 'eventList'])->name('home.event-list');
@@ -15,19 +12,12 @@ Route::get('/contact', [HomeController::class, 'contact'])->name('home.contact')
 Route::get('/events/run', [HomeController::class, 'run'])->name('home.run');
 Route::get('/events/register/{id}', [HomeController::class, 'register'])->name('home.event-register');
 Route::post('/events/register/store', [HomeController::class, 'registerStore'])->name('home.event-register-store');
+Route::get('/events/payment/payment-status', [HomeController::class, 'paymentStatus'])->name('home.payment-status');
+Route::get('/events/payment/check-payment-status/{orderId}', [HomeController::class, 'checkPaymentStatus'])->name('home.check-payment-status');
 Route::post('/cek-voucher', [HomeController::class, 'cekVoucher'])->name('home.cek-voucher');
 Route::get('/events/slug/{slug}', [HomeController::class, 'eventDetail'])->name('home.event-detail');
 Route::post('/contact/send', [HomeController::class, 'send'])->name('home.send');
 Route::get('/event-success-payment', [HomeController::class, 'successPage'])->name('event.success.payment');
-
-
-Route::get('/test-email-invoice/{id}', function ($id) {
-    $order = Order::findOrFail($id);
-
-    Mail::to($order->email)->send(new \App\Mail\InvoicePaidMail($order));
-
-    return 'Email invoice berhasil dikirim ke ' . $order->email;
-});
 
 
 Route::middleware(['auth', 'verified'])->group(function () {

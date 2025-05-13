@@ -7,19 +7,35 @@
 </head>
 
 <body>
-    <h2>Terima kasih, {{ $order->nama }}</h2>
+    <h2>Terima kasih, {{ $pendaftar->nama_lengkap }}</h2>
 
-    <p>Pembayaran Anda telah kami terima.</p>
+    <p>Kami dengan senang hati menginformasikan bahwa pembayaran Anda telah berhasil kami terima.</p>
 
-    <ul>
-        <li><strong>Order ID:</strong> {{ $order->order_id }}</li>
-        <li><strong>Status:</strong> {{ $order->status_pembayaran }}</li>
-        <li><strong>BIB:</strong> {{ $order->bib }}</li>
-    </ul>
+    <div style="display: flex;">
+        <ul style="margin-right: 10px; list-style: none; padding: 0;">
+            <li><strong>Order ID</strong></li>
+            <li><strong>Nama event</strong></li>
+            <li><strong>Kategori Event</strong></li>
+            <li><strong>Jenis Tiket</strong></li>
+            <li><strong>Nomor BIB</strong></li>
+            <li><strong>Status Pembayaran</strong></li>
+        </ul>
+        <ul style="list-style: none; padding: 0;">
+            <li>: {{ $order->order_id }}</li>
+            <li>: {{$pendaftar->ticket->eventCategory->event->event_name}}</li>
+            <li>: {{$pendaftar->ticket->eventCategory->category_event}} - {{$pendaftar->ticket->eventCategory->distance}}K</li>
+            <li>: {{$pendaftar->ticket->name_ticket}}</li>
+            <li>: {{ $pendaftar->bib }}</li>
+            <li>: Success</li>
+        </ul>
+    </div>
 
-    <p>Silakan unduh invoice Anda dalam bentuk PDF pada lampiran email ini.</p>
+    <p>Silakan unduh invoice Anda dalam format PDF yang telah kami lampirkan pada email ini. Harap cetak dan bawa invoice tersebut saat proses pengambilan Racepack sebagai bukti validasi pembayaran.</p>
 
-    <p>Terima kasih.</p>
+    <p>Apabila Anda memiliki pertanyaan lebih lanjut, jangan ragu untuk menghubungi kontak panitia yang ada di deskripsi event.</p>
+
+    <p>Terima kasih atas kepercayaan Anda dan sampai jumpa di hari event.</p>
+
 </body>
 
 </html>

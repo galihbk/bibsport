@@ -192,7 +192,7 @@
                         <th class="center text-black">#</th>
                         <th class="text-black">Nama event</th>
                         <th class="text-black">Kategori Event</th>
-                        <th class="right text-black">Nama Tiket</th>
+                        <th class="right text-black">Jenis Tiket</th>
                         <th class="center text-black">QTY</th>
                         <th class="right text-black">Harga</th>
                     </tr>

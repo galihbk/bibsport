@@ -50,7 +50,7 @@
             onSuccess: function(result) {
                 alert("Pembayaran berhasil!");
                 console.log(result);
-                // TODO: Kirim result ke server pakai AJAX
+                window.location.href = `event/payment/payment-status?order_id=${result.order_id}`;
             },
             onPending: function(result) {
                 alert("Menunggu pembayaran...");

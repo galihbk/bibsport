@@ -28,8 +28,10 @@
 @endsection
 
 @section('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
-    const orderId = "{{ request('order_id') }}";
+    const orderId = "{{ $order_id }}";
     const statusIcon = document.getElementById('status-icon');
     const statusMessage = document.getElementById('status-message');
 
@@ -41,30 +43,42 @@
 
     const messages = {
         pending: 'Sedang memverifikasi pembayaran Anda...',
-        paid: 'Terima kasih, pembayaran Anda berhasil!',
-        failed: 'Maaf, pembayaran Anda gagal atau dibatalkan.',
+        paid: 'Terima kasih, pembayaran Anda berhasil!<br>Invoice sudah di kirimkan melalui email yang di daftarkan!',
+        failed: 'Maaf, pembayaran Anda gagal atau dibatalkan. Silahkan hubungi admin jika anda sudah mengirim uang',
     };
 
+    let interval = null;
+
     const checkStatus = () => {
-        fetch(`/api/check-payment-status/${orderId}`)
-            .then(res => res.json())
-            .then(data => {
+        $.ajax({
+            url: `/events/payment/check-payment-status/${orderId}`, // Ganti dengan URL API yang benar
+            method: 'GET',
+            success: function(data) {
                 const status = data.status;
 
                 statusIcon.innerHTML = icons[status] ?? icons.pending;
                 statusMessage.innerHTML = messages[status] ?? messages.pending;
 
                 if (status === 'paid' || status === 'failed') {
-                    clearInterval(interval);
+                    if (interval) {
+                        clearInterval(interval);
+                        interval = null;
+                    }
                 }
-            })
-            .catch(err => {
+            },
+            error: function(err) {
                 console.error(err);
                 statusMessage.innerHTML = 'Terjadi kesalahan. Silakan muat ulang halaman.';
-            });
+                if (interval) {
+                    clearInterval(interval);
+                    interval = null;
+                }
+            }
+        });
     };
 
-    const interval = setInterval(checkStatus, 3000); // cek setiap 3 detik
-    checkStatus(); // panggil pertama kali
+    checkStatus();
+    interval = setInterval(checkStatus, 3000); // Cek setiap 3 detik
 </script>
+
 @endsection

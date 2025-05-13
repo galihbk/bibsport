@@ -5,23 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Midtrans\Notification;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\Storage;
 
 class MidtransController extends Controller
 {
     public function callback(Request $request)
     {
-        // Debugging data yang diterima
         \Log::info('Midtrans Callback Received:', $request->all());
 
-        // Menangani data dari Midtrans Notification
         $notif = new Notification();
 
-        // Data yang diterima dari Midtrans
-        $order_id = $notif->order_id; // ID order dari Midtrans
-        $transaction_status = $notif->transaction_status; // Status transaksi
-        $fraud_status = $notif->fraud_status; // Status fraud
+        $order_id = $notif->order_id;
+        $transaction_status = $notif->transaction_status;
+        $fraud_status = $notif->fraud_status;
 
-        // Temukan order berdasarkan order_id
         $pendaftar = Order::with('ticket.eventCategory')->where('order_id', $order_id)->first();
 
         if (!$pendaftar) {
@@ -64,12 +65,33 @@ class MidtransController extends Controller
 
             $bib = preg_replace('/#+/', $urutan, $format);
             $pendaftar->bib = $bib;
+            $pendaftar->metode_pembayaran = $notif->payment_type ?? null;
+            if ($pendaftar->status_pembayaran === 'paid') {
+                $pendaftar->tanggal_pembayaran = now();
+            }
+            $pendaftar->save();
+            $qrPath = 'qrcodes/' . $order_id . '.png';
+            $qrFullPath = public_path($qrPath);
+
+            if (!file_exists($qrFullPath)) {
+                $qrImage = QrCode::format('png')->size(200)->generate($order_id);
+
+                if (!file_exists(public_path('qrcodes'))) {
+                    mkdir(public_path('qrcodes'), 0755, true);
+                }
+
+                file_put_contents($qrFullPath, $qrImage);
+            }
+            $folder = storage_path('app/invoices');
+            if (!File::exists($folder)) {
+                File::makeDirectory($folder, 0755, true);
+            }
+
+            $pdf = Pdf::loadView('pdf.invoice-pdf', compact('pendaftar'));
+            $pdfPath = $folder . '/invoice-' . $pendaftar->order_id . '.pdf';
+            $pdf->save($pdfPath);
+            Mail::to($pendaftar->email)->send(new \App\Mail\InvoicePaidMail($pendaftar));
         }
-        $pendaftar->metode_pembayaran = $notif->payment_type ?? null;
-        if ($pendaftar->status_pembayaran === 'paid') {
-            $pendaftar->tanggal_pembayaran = now();
-        }
-        $pendaftar->save();
 
         return response()->json(['message' => 'Callback processed'], 200);
     }
