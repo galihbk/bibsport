@@ -12,7 +12,7 @@
             padding: 0;
             background-image: url("{{ asset('assets/img/bibsport-opacity.png') }}");
             background-position: center center;
-            background-size: 300px auto;
+            background-size: cover;
             background-repeat: no-repeat;
         }
 
