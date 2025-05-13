@@ -138,7 +138,7 @@
                     <strong>{{ $pendaftar->order_id }}</strong>
                 </td>
                 <td align="right">
-                    <strong>Status:</strong> Success
+                    <strong> Success</strong>
                 </td>
             </tr>
         </table>
@@ -150,18 +150,23 @@
             <thead>
                 <tr>
                     <td style="width: 30%;">
-                        <h6>From:</h6>
+                        <div>From:</div>
                         <div><strong>{{$pendaftar->ticket->eventCategory->event->user->name}}</strong></div>
                         <div>{{$pendaftar->ticket->eventCategory->event->user->address}}</div>
                         <div>Email: {{$pendaftar->ticket->eventCategory->event->user->email}}</div>
                         <div>Phone: {{$pendaftar->ticket->eventCategory->event->user->phone}}</div>
                     </td>
                     <td style="width: 30%;">
-                        <h6>To:</h6>
+                        <div>To:</div>
                         <div><strong>{{$pendaftar->nama_lengkap}}</strong></div>
                         <div>{{$pendaftar->alamat}}</div>
                         <div>Email: {{$pendaftar->email}}</div>
                         <div>Phone: {{$pendaftar->no_wa}}</div>
+                    </td>
+                    <td style="width: 30%;">
+                        <div class="col col-3 mt-3">
+                            <img src="{{asset('qrcodes/'.$pendaftar->order_id.'.png')}}" alt="" style="width: 150px;">
+                        </div>
                     </td>
                     <td style="width: 30%;">
                         <div class="col col-9">
@@ -169,11 +174,6 @@
                                 <img class="logo-abbr me-2" width="200" src="{{ asset('assets/img/logo-bibsport-text-right.png') }}" alt="">
                             </div>
                             <span><strong class="d-block">www.bibsport.id</strong>
-                        </div>
-                    </td>
-                    <td style="width: 30%;">
-                        <div class="col col-3 mt-3">
-                            <img src="{{asset('qrcodes/'.$pendaftar->order_id.'.png')}}" alt="" style="width: 150px;">
                         </div>
                     </td>
                 </tr>
