@@ -38,7 +38,7 @@ class HomeController extends Controller
             file_put_contents($qrFullPath, $qrImage);
         }
 
-        return view('pdf.invoice-pdf', compact('pendaftar', 'qrPublicPath'));
+        return view('pdf.invoice-pdf', compact('pendaftar'));
         die;
         $folder = storage_path('app/invoices');
         if (!File::exists($folder)) {
