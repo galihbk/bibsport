@@ -56,6 +56,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/event/store', [EventController::class, 'store'])->name('event.store');
         Route::post('/event/category-store', [EventController::class, 'categoryStore'])->name('event.category-store');
         Route::get('/event/get-peserta-terdaftar', [EventController::class, 'getPesertaTerdaftar'])->name('event.get-peserta-terdaftar');
+        Route::get('/event/get-peserta-tidak-terdaftar', [EventController::class, 'getPesertaTidakTerdaftar'])->name('event.get-peserta-tidak-terdaftar');
         Route::post('/event/ticket-store', [EventController::class, 'ticketStore'])->name('event.ticket-store');
         Route::post('/event/voucher-store', [EventController::class, 'voucherStore'])->name('event.voucher-store');
         Route::get('/event-detail/{id}', [EventController::class, 'eventDetail'])->name('event.detail');

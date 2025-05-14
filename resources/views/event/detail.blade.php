@@ -42,6 +42,7 @@
                                         </svg></a>
                                     <ul class="dropdown-menu dropdown-menu-end">
                                         <li class="dropdown-item"><i class="fa fa-ticket text-primary me-2"></i> <a type="button" data-bs-toggle="modal" data-bs-target="#modalCategory">Tambah Kategori</a></li>
+                                        <li class="dropdown-item"><i class="fa-solid fa-qrcode text-primary me-2"></i> <a type="button" data-bs-toggle="modal" data-bs-target="#modalScanQr">Scan QR</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -59,7 +60,7 @@
                 <a href="javascript:void(0)" id="refreshData"><i class="fas fa-refresh"></i></a>
             </div>
             <div class="card-body">
-                <div class="default-tab">
+                <!-- <div class="default-tab">
                     <ul class="nav nav-tabs" role="tablist">
                         <li class="nav-item" role="presentation">
                             <a class="nav-link active" data-bs-toggle="tab" href="#home" aria-selected="true" role="tab">Terdaftar</a>
@@ -67,30 +68,31 @@
                         <li class="nav-item" role="presentation">
                             <a class="nav-link" data-bs-toggle="tab" href="#profile" aria-selected="false" role="tab" tabindex="-1">Tidak Terdaftar</a>
                         </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane fade active show" id="home" role="tabpanel">
-                            <div class="pt-4">
-                                <div class="table-responsive">
-                                    <table id="peserta-terdaftar" class="display">
-                                        <thead>
-                                            <tr>
-                                                <th>BIB</th>
-                                                <th>Nama Lengkap</th>
-                                                <th>Jenis Kelamin</th>
-                                                <th>Asal</th>
-                                                <th>Email</th>
-                                                <th>Nomor WA</th>
-                                                <th>Kategori Event</th>
-                                                <th>Tanggal Terdaftar</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
+                    </ul> -->
+                <div class="tab-content">
+                    <div class="tab-pane fade active show" id="home" role="tabpanel">
+                        <div class="pt-4">
+                            <div class="table-responsive">
+                                <table id="peserta-terdaftar" class="display">
+                                    <thead>
+                                        <tr>
+                                            <th>BIB</th>
+                                            <th>Nama Lengkap</th>
+                                            <th>Jenis Kelamin</th>
+                                            <th>Asal</th>
+                                            <th>Email</th>
+                                            <th>Nomor WA</th>
+                                            <th>Kategori Event</th>
+                                            <th>Tanggal Terdaftar</th>
+                                            <th>Racepack</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                </table>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="profile" role="tabpanel">
+                    </div>
+                    <!-- <div class="tab-pane fade" id="profile" role="tabpanel">
                             <div class="pt-4">
                                 <div class="table-responsive">
                                     <table id="peserta-tidak-terdaftar" class="display">
@@ -109,12 +111,12 @@
                                     </table>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </div> -->
                 </div>
             </div>
         </div>
     </div>
+    <!-- </div> -->
     <div class="modal fade" id="modalCategory" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-basic">
             <form action="{{ route('event.category-store') }}" method="POST" enctype="multipart/form-data" id="eventCategoryForm">
@@ -337,7 +339,7 @@
                     }
                 });
             };
-            $('#peserta-terdaftar').DataTable({
+            let tableTerdaftar = $('#peserta-terdaftar').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('event.get-peserta-terdaftar') }}",
@@ -376,12 +378,28 @@
                         name: 'tanggal_terdaftar'
                     },
                     {
+                        data: 'status_racepack',
+                        name: 'status_racepack',
+                        render: function(data, type, row) {
+                            if (data == 0) {
+                                return '<span class="badge badge-danger">Belum diambil</span>';
+                            } else if (data == 1) {
+                                return '<span class="badge badge-success">Diambil</span>';
+                            }
+                            return '';
+                        }
+                    },
+                    {
                         data: 'action',
                         name: 'action',
                         orderable: false,
                         searchable: false
                     }
                 ]
+            });
+
+            $('#refreshData').on('click', function() {
+                tableTerdaftar.ajax.reload();
             });
             $('#eventCategoryForm').submit(function(e) {
                 e.preventDefault();

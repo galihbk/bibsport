@@ -9,6 +9,7 @@ use App\Models\EventCategories;
 use App\Models\Order;
 use App\Models\Ticket;
 use App\Models\Voucher;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use HTMLPurifier;
 use Yajra\DataTables\Facades\DataTables;
@@ -174,10 +175,49 @@ class EventController extends Controller
     }
     public function getPesertaTerdaftar(Request $request)
     {
-        $orders = Order::with(['ticket.eventCategory']);
+        $orders = Order::with(['ticket.eventCategory'])->where('status_pembayaran', 'paid');
 
         if ($request->ajax()) {
             return DataTables::eloquent($orders)
+                ->addColumn('kategori_event', function ($order) {
+                    return $order->ticket->eventCategory->category_event ?? '-';
+                })
+                ->addColumn('nama_tiket', function ($order) {
+                    return $order->ticket->name_ticket ?? '-';
+                })
+                ->addColumn('jenis_kelamin', function ($order) {
+                    if ($order->jenis_kelamin == 'L') {
+                        return 'Laki-laki';
+                    } elseif ($order->jenis_kelamin == 'P') {
+                        return 'Perempuan';
+                    } else {
+                        return '-';
+                    }
+                })
+                ->addColumn('action', function ($order) {
+                    return '<div class="dropdown">
+														<button type="button" class="btn btn-success light sharp" data-bs-toggle="dropdown" aria-expanded="false">
+															<svg width="20px" height="20px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
+														</button>
+														<div class="dropdown-menu" style="">
+															<a class="dropdown-item" href="#">Detail</a>
+															<a class="dropdown-item" href="#">Tandai racepack diambil</a>
+														</div>
+													</div>';
+                })
+                ->editColumn('tanggal_terdaftar', function ($order) {
+                    return optional(Carbon::parse($order->tanggal_pembayaran))->format('d/m/Y');
+                })
+                ->make(true);
+        }
+    }
+    public function getPesertaTidakTerdaftar(Request $request)
+    {
+        $orders = Order::with(['ticket.eventCategory'])->where('status_pembayaran', '<>', 'paid');
+
+        if ($request->ajax()) {
+            return DataTables::eloquent($orders)
+                ->addIndexColumn() // Tambah kolom nomor otomatis
                 ->addColumn('kategori_event', function ($order) {
                     return $order->ticket->eventCategory->category_event ?? '-';
                 })
@@ -188,11 +228,12 @@ class EventController extends Controller
                     return '<button class="btn btn-primary">Action</button>';
                 })
                 ->editColumn('tanggal_terdaftar', function ($order) {
-                    return optional($order->tanggal_pembayaran)->format('d/m/Y');
+                    return optional($order->created_at)->format('d/m/Y');
                 })
                 ->make(true);
         }
     }
+
 
     public function ticketStore(Request $request)
     {
