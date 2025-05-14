@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HistoryTransaction;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Midtrans\Notification;
@@ -44,7 +45,16 @@ class MidtransController extends Controller
         } elseif (in_array($transaction_status, ['deny', 'expire', 'cancel'])) {
             $order->status_pembayaran = 'failed';
         }
-
+        HistoryTransaction::create([
+            'order_id' => $order->order_id,
+            'nama' => $order->nama_lengkap,
+            'voucher' => $order->voucher,
+            'price' => $order->jumlah_bayar,
+            'ticket_name' => $order->ticket->name_ticket,
+            'category_name' => $order->ticket->eventCategory->category_event,
+            'pay_method' => $order->metode_pembayaran,
+            'status' => $order->status_pembayaran,
+        ]);
         if ($order->status_pembayaran === 'paid' && !$order->bib) {
             $gender = $order->jenis_kelamin; // L atau P
             $eventCategory = $order->ticket->eventCategory;

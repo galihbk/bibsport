@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use App\Models\EventCategories;
+use App\Models\HistoryTransaction;
 use App\Models\Order;
 use App\Models\Ticket;
 use App\Models\User;
@@ -104,51 +105,48 @@ class HomeController extends Controller
             'voucher' => 'nullable|string',
         ], $messages);
 
-        // Simpan data ke database
         $pendaftar = Order::create($validated);
 
-        // Ambil data tiket
         $ticket = Ticket::with('eventCategory.event')->findOrFail($validated['ticket_id']);
 
         $eventType = strtolower($ticket->eventCategory->event->event_type);
 
-        // Tentukan prefix order_id berdasarkan jenis event
         $prefix = match ($eventType) {
             'lari' => 'RUN',
             'sepeda' => 'CYCLE',
             default => 'EVNT',
         };
 
-        // Generate order_id
         $order_id = $prefix . '-' . $pendaftar->id . '-' . time();
         $pendaftar->order_id = $order_id;
         $pendaftar->save();
 
-        // Default harga tiket
         $hargaAkhir = $ticket->price;
 
-        // Jika ada voucher, hitung diskon
         if ($validated['voucher']) {
             $voucher = Voucher::where('code', $validated['voucher'])
                 ->where('ticket_id', $validated['ticket_id'])
                 ->first();
-
-            // Jika voucher ada, hitung diskon
             if ($voucher) {
                 if ($voucher->discount_type == 'percent') {
-                    // Diskon persentase
                     $hargaAkhir -= ($hargaAkhir * ($voucher->discount_value / 100));
                 } elseif ($voucher->discount_type == 'fixed') {
-                    // Diskon tetap
                     $hargaAkhir -= $voucher->discount_value;
                 }
 
-                // Pastikan harga akhir tidak negatif
                 $hargaAkhir = max(0, $hargaAkhir);
             }
         }
-
-        // Siapkan data untuk Midtrans Snap
+        HistoryTransaction::create([
+            'order_id' => $pendaftar->order_id,
+            'nama' => $pendaftar->nama_lengkap,
+            'voucher' => $pendaftar->voucher,
+            'price' => $hargaAkhir,
+            'ticket_name' => $ticket->name_ticket,
+            'category_name' => $ticket->eventCategory->category_event,
+            'pay_method' => '-',
+            'status' => 'Daftar',
+        ]);
         $params = [
             'transaction_details' => [
                 'order_id' => $order_id,

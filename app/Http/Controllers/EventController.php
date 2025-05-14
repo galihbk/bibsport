@@ -91,16 +91,14 @@ class EventController extends Controller
                 'instagram' => strip_tags($request->instagram),
                 'poster_url' => $filename,
                 'user_id' => auth()->user()->id,
-                'description' => $purifier->purify($request->deskripsi), // CKEditor input
-                'skb' => $purifier->purify($request->skb), // CKEditor input
+                'description' => $purifier->purify($request->deskripsi),
+                'skb' => $purifier->purify($request->skb),
             ]);
 
             return redirect()->route('event')->with('success', 'Event berhasil ditambahkan.');
         } catch (\Exception $e) {
-            // Catat error ke log
             Log::error('Gagal menyimpan event: ' . $e->getMessage());
 
-            // Redirect balik ke form dengan error message
             return redirect()->back()
                 ->withInput()
                 ->with('error', 'Gagal menambahkan event. Silakan coba lagi.');
@@ -115,6 +113,90 @@ class EventController extends Controller
             ->paginate(6);
 
         return view('partials.card-event-admin', compact('events'))->render();
+    }
+    public function getDataScan(Request $request)
+    {
+        $order_id = $request->barcode;
+
+        $order = Order::where('order_id', $order_id)->first();
+
+        if ($order) {
+            $statusText = $order->status_racepack == 1 ? 'Sudah diambil' : 'Belum diambil';
+            $badgeClass = $order->status_racepack == 1 ? 'success' : 'danger';
+            $buttonText = $order->status_racepack == 1 ? 'Scan Ulang' : 'Ambil Racepack';
+            $butonFunc = $order->status_racepack == 1
+                ? 'onclick="scanUlang()"'
+                : 'onclick="ambilRacepack(\'' . $order->order_id . '\')"';
+
+            $html = '
+                <div class="col-lg-12">
+                    <h5 class="text-center">Data Peserta</h5>
+                    <div class="d-flex my-3">
+                        <ul class="me-2 list-unstyled">
+                            <li><strong>BIB</strong></li>
+                            <li><strong>Nama</strong></li>
+                            <li><strong>Ukuran Jersey</strong></li>
+                            <li><strong>Pendaftaran</strong></li>
+                            <li><strong>Racepack</strong></li>
+                        </ul>
+                        <ul id="show-data" class="list-unstyled">
+                            <li>: ' . $order->bib . '</li>
+                            <li>: ' . $order->nama_lengkap . '</li>
+                            <li>: ' . $order->ukuran_jersey . '</li>
+                            <li>: ' . $order->tanggal_pembayaran . '</li>
+                            <li>: <span class="badge bg-' . $badgeClass . '">' . $statusText . '</span></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-12">
+                        <button class="btn btn-primary w-100" ' . $butonFunc . '>' . $buttonText . '</button>
+                    </div>
+                </div>
+            ';
+
+            return response()->json([
+                'success' => true,
+                'data' => $html
+            ]);
+        }
+        $html = '<div class="alert alert-danger solid alert-dismissible fade show">
+									<svg viewBox="0 0 24 24" width="24 " height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+									<strong>Error!</strong> Peserta tidak terdaftar.
+                                </div>';
+        return response()->json([
+            'success' => false,
+            'data' => $html
+        ]);
+    }
+
+    public function changeStatusRacepack(Request $request)
+    {
+        $order_id = $request->barcode;
+
+        $order = Order::where('order_id', $order_id)->first();
+
+        if ($order) {
+            $order->status_racepack = 1;
+            if ($order->save()) {
+                $html = '<div class="alert alert-success solid alert-dismissible fade show">
+									<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+									<strong>Berhasil!</strong> Status pengambilan racepack berhasil diubah.
+									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="btn-close">
+                                    </button>
+                                </div>';
+                return response()->json([
+                    'success' => true,
+                    'message' => $html
+                ]);
+            }
+        }
+        $html = '<div class="alert alert-danger solid alert-dismissible fade show">
+									<svg viewBox="0 0 24 24" width="24 " height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="me-2"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+									<strong>Gagal!</strong> Data gagal diubah, silahkan coba lagi atau refresh halaman.
+                                </div>';
+        return response()->json([
+            'success' => false,
+            'message' => $html
+        ]);
     }
     public function eventDetail($id)
     {
