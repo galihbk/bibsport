@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AdminNotificationMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Event;
@@ -15,6 +16,7 @@ use HTMLPurifier;
 use Yajra\DataTables\Facades\DataTables;
 use HTMLPurifier_Config;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Symfony\Component\Translation\Dumper\DumperInterface;
 
 class EventController extends Controller
@@ -76,7 +78,7 @@ class EventController extends Controller
             $config = HTMLPurifier_Config::createDefault();
             $purifier = new HTMLPurifier($config);
 
-            Event::create([
+            $event = Event::create([
                 'event_name' => strip_tags($request->nama_event),
                 'slug' => Str::slug($request->nama_event) . '-' . Str::random(5),
                 'event_type' => strip_tags($request->jenis_event),
@@ -94,6 +96,7 @@ class EventController extends Controller
                 'description' => $purifier->purify($request->deskripsi),
                 'skb' => $purifier->purify($request->skb),
             ]);
+            Mail::to('admin@example.com')->queue(new AdminNotificationMail($event->id, 'daftar event'));
 
             return redirect()->route('event')->with('success', 'Event berhasil ditambahkan.');
         } catch (\Exception $e) {
