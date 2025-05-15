@@ -129,7 +129,7 @@ class EventController extends Controller
             $buttonText = $order->status_racepack == 1 ? 'Scan Ulang' : 'Ambil Racepack';
             $butonFunc = $order->status_racepack == 1
                 ? 'onclick="scanUlang()"'
-                : 'onclick="ambilRacepack(\'' . $order->order_id . '\')"';
+                : 'onclick="ambilRacepack(\'' . $order->order_id . '\', \'scan\')"';
 
             $html = '
                 <div class="col-lg-12">
@@ -212,9 +212,18 @@ class EventController extends Controller
     }
     public function categoryStore(Request $request)
     {
+        $event = Event::where('id', $request->event_id)->first();
+
+        if (!$event || $event->event_validation != 1) {
+            return response()->json([
+                'message' => 'Gagal menambahkan kategori. Event belum divalidasi atau tidak ditemukan.'
+            ], 403);
+        }
         $request->validate([
             'category_event' => 'required',
             'distance' => 'required',
+            'format_bib_m' => 'required',
+            'format_bib_f' => 'required',
             'poster' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
@@ -225,6 +234,8 @@ class EventController extends Controller
         EventCategories::create([
             'event_id' => $request->event_id,
             'category_event' => $request->category_event,
+            'format_bib_m'      => $request->format_bib_m,
+            'format_bib_f'      => $request->format_bib_f,
             'distance' => $request->distance,
             'poster_category' => $filename,
         ]);
@@ -286,7 +297,7 @@ class EventController extends Controller
 														</button>
 														<div class="dropdown-menu" style="">
 															<a class="dropdown-item" href="#">Detail</a>
-															<a class="dropdown-item" href="#">Tandai racepack diambil</a>
+															<a class="dropdown-item" href="javascript:void(0)" onclick="ambilRacepack(\'' . $order->order_id . '\', \'button\')">Tandai racepack diambil</a>
 														</div>
 													</div>';
                 })

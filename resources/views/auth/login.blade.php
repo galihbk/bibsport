@@ -53,12 +53,6 @@
                 </div>
                 <h6 class="login-title"><span>Or continue with</span></h6>
 
-                <div class="mb-3">
-                    <ul class="d-flex align-self-center justify-content-center">
-                        <li><a target="_blank" href="https://www.google.com/"
-                                class="btn-google-plus mx-2"><i class="fa-brands fa-google-plus-g"></i></a></li>
-                    </ul>
-                </div>
                 <p class="text-center">Belum punya akun?
                     <a class="btn-link text-primary" href="{{ url('register') }}">Daftar disini</a>
                 </p>

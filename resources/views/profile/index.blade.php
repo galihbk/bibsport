@@ -18,9 +18,23 @@
                     </div>
                 </div>
                 <div class="profile-info">
-                    <div class="profile-photo">
-                        <img src="{{ url('assets-admin') }}/images/profile/profile.png" class="img-fluid rounded-circle"
-                            alt="">
+                    <div class="profile-photo position-relative">
+                        @php
+                        $photo = $user->image
+                        ? asset('storage/profile/' . $user->image)
+                        : asset('assets-admin/images/profile/profile.png');
+                        @endphp
+                        <img src="{{ $photo }}"
+                            class="rounded-circle"
+                            style="width: 90px; height: 90px; object-fit: cover;"
+                            alt="Profile Photo">
+
+                        <button type="button"
+                            class="btn btn-sm btn-light position-absolute translate-middle px-2 py-1 shadow-sm border rounded-circle"
+                            data-bs-toggle="modal" data-bs-target="#modalGantiFoto"
+                            style="background-color: rgba(255,255,255,0.9); bottom:30px; right:-5px">
+                            <i class="fa fa-camera text-primary"></i>
+                        </button>
                     </div>
                     <div class="profile-details">
                         <div class="profile-email px-2 pt-2">
@@ -29,17 +43,38 @@
                         </div>
                         <div class="profile-name px-3 pt-2">
                             @if (Auth::user()->is_verified == 1)
-                                <span class="badge badge-lg light badge-primary">Verifikasi</span>
+                            <span class="badge badge-lg light badge-primary">Verifikasi</span>
                             @elseif(Auth::user()->is_verified == 2)
-                                <span class="badge badge-lg light badge-secondary">Diajukan</span>
+                            <span class="badge badge-lg light badge-secondary">Diajukan</span>
                             @elseif(Auth::user()->is_verified == 0)
-                                <span class="badge badge-lg light badge-warning">Perlu di lengkapi</span>
+                            <span class="badge badge-lg light badge-warning">Perlu di lengkapi</span>
                             @elseif(Auth::user()->is_verified == 3)
-                                <span class="badge badge-lg light badge-danger">Ditolak</span>
+                            <span class="badge badge-lg light badge-danger">Ditolak</span>
                             @endif
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="modal fade" id="modalGantiFoto" tabindex="-1" aria-labelledby="modalGantiFotoLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form action="{{ route('profile.updatePhoto') }}" method="POST" enctype="multipart/form-data" class="modal-content">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalGantiFotoLabel">Ganti Foto Profil</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="fotoProfil" class="form-label">Pilih Foto Baru</label>
+                            <input type="file" name="photo" id="fotoProfil" class="form-control" accept="image/*" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    </div>
+                </form>
             </div>
         </div>
         <div class="card h-auto">
@@ -49,42 +84,42 @@
                         @csrf
                         @method('PUT')
                         @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul class="mb-0">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
                         @endif
 
                         @if (session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
-                            </div>
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
                         @endif
                         @if (session('error'))
-                            <div class="alert alert-danger">
-                                {{ session('error') }}
-                            </div>
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
                         @endif
                         @if (Auth::user()->is_verified == 1)
-                            @php
-                                $disabled = 'disabled';
-                            @endphp
+                        @php
+                        $disabled = 'disabled';
+                        @endphp
                         @elseif(Auth::user()->is_verified == 2)
-                            @php
-                                $disabled = 'disabled';
-                            @endphp
+                        @php
+                        $disabled = 'disabled';
+                        @endphp
                         @elseif(Auth::user()->is_verified == 3 || Auth::user()->is_verified == 0)
-                            @php
-                                $disabled = '';
-                            @endphp
-                            @if (Auth::user()->revition != null)
-                                <div class="alert alert-danger">
-                                    {{ Auth::user()->revition }}
-                                </div>
-                            @endif
+                        @php
+                        $disabled = '';
+                        @endphp
+                        @if (Auth::user()->revition != null)
+                        <div class="alert alert-danger">
+                            {{ Auth::user()->revition }}
+                        </div>
+                        @endif
                         @endif
                         <div class="row">
                             <div class="col-lg-6 mb-4">
@@ -138,28 +173,28 @@
                                 <div class="mb-3">
                                     <label class="form-label">@php
                                         if (Auth::user()->organizer_type == 'Perorangan') {
-                                            echo 'NIK';
+                                        echo 'NIK';
                                         } else {
-                                            echo 'NIB';
-                                    } @endphp</label>
+                                        echo 'NIB';
+                                        } @endphp</label>
                                     <input type="text" class="form-control" name="identity_id"
                                         value="{{ Auth::user()->identity_id }}" required {{ $disabled }}>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">@php
                                         if (Auth::user()->organizer_type == 'Perorangan') {
-                                            echo 'Upload KTP ';
+                                        echo 'Upload KTP ';
                                         } else {
-                                            echo 'Upload Legalitas CV';
-                                    } @endphp</label>
+                                        echo 'Upload Legalitas CV';
+                                        } @endphp</label>
                                     @if (Auth::user()->is_verified == 3 || Auth::user()->is_verified == 0)
-                                        <input type="file" class="form-control" name="file_doc" required
-                                            accept="application/pdf" {{ $disabled }}>
+                                    <input type="file" class="form-control" name="file_doc" required
+                                        accept="application/pdf" {{ $disabled }}>
                                     @else
-                                        <br>
-                                        <a class="btn btn-primary btn-sm"
-                                            href="{{ route('dokumen.download', ['filename' => Auth::user()->file_doc]) }}">Lihat
-                                            File</a>
+                                    <br>
+                                    <a class="btn btn-primary btn-sm"
+                                        href="{{ route('dokumen.download', ['filename' => Auth::user()->file_doc]) }}">Lihat
+                                        File</a>
                                     @endif
                                 </div>
                                 <div class="mb-3">
@@ -175,10 +210,10 @@
         </div>
     </div>
     @section('script')
-        <script>
-            $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
 
-            });
-        </script>
+        });
+    </script>
     @endsection
 </x-app-layout>

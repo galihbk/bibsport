@@ -4,8 +4,10 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Middleware\CheckVerified;
 use App\Mail\InvoicePaidMail;
+use App\Models\HistoryTransaction;
 use App\Models\Order;
 use Illuminate\Support\Facades\Mail;
 
@@ -47,6 +49,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.detail');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/profile/photo', [ProfileController::class, 'updatePhoto'])->name('profile.updatePhoto');
     Route::get('/dokumen/{filename}', [ProfileController::class, 'downloadDokumen'])
         ->name('dokumen.download');
     // Rute khusus user yang sudah terverifikasi (CheckVerified)
@@ -65,9 +68,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/event/search', [EventController::class, 'search'])->name('event.search');
         Route::get('/event/categories', [EventController::class, 'categories'])->name('event.categories');
         Route::post('/event', [EventController::class, 'index'])->name('event');
-        Route::get('/dashboard', function () {
-            return view('dashboard');
-        })->name('dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/notifications/data', [DashboardController::class, 'fetchNotifications']);
     });
 });
 

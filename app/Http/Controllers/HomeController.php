@@ -56,7 +56,7 @@ class HomeController extends Controller
     }
     public function run(Request $request)
     {
-        $events = Event::paginate(10);
+        $events = Event::where('event_validation', 1)->paginate(10);
         return view('home.run', compact('events'));
     }
     public function eventDetail($slug)
@@ -138,6 +138,7 @@ class HomeController extends Controller
             }
         }
         HistoryTransaction::create([
+            'user_id' => $ticket->eventCategory->event->user_id,
             'order_id' => $pendaftar->order_id,
             'nama' => $pendaftar->nama_lengkap,
             'voucher' => $pendaftar->voucher,

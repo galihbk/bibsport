@@ -97,8 +97,16 @@
             <div class="dlabnav-scroll">
                 <ul class="metismenu" id="menu">
                     <li class="dropdown header-profile">
+                        @php
+                        $photo = $data->image
+                        ? asset('storage/profile/' . $data->image)
+                        : asset('assets-admin/images/profile/profile.png');
+                        @endphp
                         <a class="nav-link" href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
-                            <img src="{{ url('assets-admin') }}/images/profile/pic1.jpg" width="20" alt="">
+                            <img src="{{ $photo }}"
+                                class="rounded-circle"
+                                style="width: 50px; height: 50px; object-fit: cover;"
+                                alt="Profile Photo">
                             <div class="header-info ms-3">
                                 <span class="font-w600 ">Hi, <b>{{ explode(' ', $data->name)[0] }}</b></span>
                                 <small class="text-end font-w400">{{ $data->email }}</small>

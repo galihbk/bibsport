@@ -91,4 +91,24 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+    public function updatePhoto(Request $request)
+    {
+        $request->validate([
+            'photo' => 'required|image|mimes:jpg,jpeg,png|max:2048'
+        ]);
+
+        $user = auth()->user();
+
+        if ($user->photo && Storage::disk('public')->exists('profile/' . $user->image)) {
+            Storage::disk('public')->delete('profile/' . $user->image);
+        }
+        $file = $request->file('photo');
+        $filename = time() . '-' . $file->getClientOriginalName();
+        $file->storeAs('profile', $filename, 'public');
+
+        $user->image = $filename;
+        $user->save();
+
+        return back()->with('success', 'Foto profil berhasil diperbarui.');
+    }
 }

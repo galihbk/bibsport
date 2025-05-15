@@ -15,8 +15,13 @@
                         <div class="new-arrival-content position-relative">
                             <h4><a href="{{route('event.detail',$event->id)}}">{{ $event->event_name }}</a></h4>
                             <div class=" comment-review star-rating">
-                                <span class="review-text">(34 reviews) / </span><a class="product-review" href="" data-bs-toggle="modal" data-bs-target="#reviewModal">Write a review?</a>
-                                <p class="price">$325.00</p>
+                                @if ($event->event_validation == 1)
+                                <span class="badge badge-lg light badge-primary">Terverifikasi</span>
+                                @elseif($event->event_validation == 0)
+                                <span class="badge badge-lg light badge-secondary">Diajukan</span>
+                                @elseif($event->event_validation == 2)
+                                <span class="badge badge-lg light badge-danger">Ditolak</span>
+                                @endif
                             </div>
                             <p class="product-para">Tanggal: {{ \Carbon\Carbon::parse($event->start_date_event)->format('d M Y') }}</p>
                             <p class="product-para">Lokasi: {{ $event->location_event }}</p>
