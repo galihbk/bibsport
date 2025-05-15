@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use App\Models\HistoryTransaction;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -26,7 +27,7 @@ class MidtransController extends Controller
         $jumlah_bayar = $notif->gross_amount;
 
         $order = Order::with('ticket.eventCategory')->where('order_id', $order_id)->first();
-
+        $event = Event::where('id', $order->ticket->eventCategory->event_id)->first();
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }
@@ -46,6 +47,7 @@ class MidtransController extends Controller
             $order->status_pembayaran = 'failed';
         }
         HistoryTransaction::create([
+            'user_id' => $event->user_id,
             'order_id' => $order->order_id,
             'nama' => $order->nama_lengkap,
             'voucher' => $order->voucher,
